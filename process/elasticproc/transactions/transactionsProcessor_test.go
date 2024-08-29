@@ -471,7 +471,7 @@ func TestTxsDatabaseProcessor_PrepareTransactionsForDatabaseInvalidTxWithSCR(t *
 		Transaction: &transaction.Transaction{
 			GasLimit: 100,
 			GasPrice: 123456,
-			Data:     []byte("DCTTransfer@54474e2d383862383366@0a"),
+			Data:     []byte("DCDTTransfer@54474e2d383862383366@0a"),
 		},
 		FeeInfo: &outport.FeeInfo{GasUsed: 100},
 	}
@@ -516,7 +516,7 @@ func TestTxsDatabaseProcessor_PrepareTransactionsForDatabaseInvalidTxWithSCR(t *
 	require.Equal(t, resultedTx.GasLimit, resultedTx.GasUsed)
 }
 
-func TestTxsDatabaseProcessor_PrepareTransactionsForDatabaseDCTNFTTransfer(t *testing.T) {
+func TestTxsDatabaseProcessor_PrepareTransactionsForDatabaseDCDTNFTTransfer(t *testing.T) {
 	t.Parallel()
 
 	txDbProc, _ := NewTransactionsProcessor(createMockArgsTxsDBProc())
@@ -526,7 +526,7 @@ func TestTxsDatabaseProcessor_PrepareTransactionsForDatabaseDCTNFTTransfer(t *te
 		Transaction: &transaction.Transaction{
 			GasLimit: 100,
 			GasPrice: 123456,
-			Data:     []byte("DCTNFTTransfer@595959453643392D303837363661@01@01@000000000000000005005C83E0C42EDCE394F40B24D29D298B0249C41F028974@66756E64@890479AFC610F4BEBC087D3ADA3F7C2775C736BBA91F41FD3D65092AA482D8B0@1c20"),
+			Data:     []byte("DCDTNFTTransfer@595959453643392D303837363661@01@01@000000000000000005005C83E0C42EDCE394F40B24D29D298B0249C41F028974@66756E64@890479AFC610F4BEBC087D3ADA3F7C2775C736BBA91F41FD3D65092AA482D8B0@1c20"),
 		},
 		FeeInfo: &outport.FeeInfo{GasUsed: 100},
 	}
@@ -573,7 +573,7 @@ func TestTxsDatabaseProcessor_PrepareTransactionsForDatabaseDCTNFTTransfer(t *te
 	require.Equal(t, resultedTx.GasLimit, resultedTx.GasUsed)
 }
 
-func TestTxsDatabaseProcessor_IssueDCTTx(t *testing.T) {
+func TestTxsDatabaseProcessor_IssueDCDTTx(t *testing.T) {
 	t.Parallel()
 
 	args := createMockArgsTxsDBProc()
@@ -613,7 +613,7 @@ func TestTxsDatabaseProcessor_IssueDCTTx(t *testing.T) {
 		SmartContractResults: map[string]*outport.SCRInfo{
 			hex.EncodeToString([]byte("scr1")): {SmartContractResult: &smartContractResult.SmartContractResult{
 				OriginalTxHash: []byte("t1"),
-				Data:           []byte("DCTTransfer@414141414141412d323436626461@0186a0"),
+				Data:           []byte("DCDTTransfer@414141414141412d323436626461@0186a0"),
 				SndAddr:        decodeBech32("moa1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzllls29jpxv"),
 				RcvAddr:        decodeBech32("moa1dglncxk6sl9a3xumj78n6z2xux4ghp5c92cstv5zsn56tjgtdwpsmdu0lq"),
 			}, FeeInfo: &outport.FeeInfo{}},

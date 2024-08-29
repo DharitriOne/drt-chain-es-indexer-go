@@ -35,13 +35,13 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/DharitriOne/drt-chain-communication-go v0.0.1 h1:oRSvLyY00cwfwxq/sxy4IbuixfulpAn0WUZhjJE58ns=
 github.com/DharitriOne/drt-chain-communication-go v0.0.1/go.mod h1:3NBXgmX7Pgwwld1YVrk5vwtyfzcKtPMscnVubSCwL4g=
-github.com/DharitriOne/drt-chain-core-go v0.0.1 h1:fg0BS+abruOKqxjw7p5BDG4/J4QETjzQp+KF8flbgM0=
-github.com/DharitriOne/drt-chain-core-go v0.0.1/go.mod h1:LyM/DkLy6WDCkhz3plyIz0z+RWeZMj11xB3RZkfJCGU=
+github.com/DharitriOne/drt-chain-core-go v0.0.2 h1:6xByZzDRiqjVY1XjwkQ3t7PqFPGDa/FnhqxNrTw+ZL4=
+github.com/DharitriOne/drt-chain-core-go v0.0.2/go.mod h1:LyM/DkLy6WDCkhz3plyIz0z+RWeZMj11xB3RZkfJCGU=
 github.com/DharitriOne/drt-chain-crypto-go v0.0.1 h1:hAcZ7zAkGJtVvZCsjQlTxPK6i1Utf5XBDvO7RmjqeaA=
 github.com/DharitriOne/drt-chain-logger-go v0.0.1 h1:/1EV0WIFOwpS4cV75q7OML0qEC/438/jtYg8hlhaiB8=
 github.com/DharitriOne/drt-chain-logger-go v0.0.1/go.mod h1:AgRkVFaNdNZDXkeKF9Wgnr3/xD09YtKMpoiwH+D3/2U=
-github.com/DharitriOne/drt-chain-vm-common-go v0.0.1 h1:lXVq0D6Ll/ivzzZNnc1kwQBE+p2nrovZVeG8Yaub9g8=
-github.com/DharitriOne/drt-chain-vm-common-go v0.0.1/go.mod h1:bCPSoswWH8fi+nqr7Kp6eiOepd+mW98pW1lET2AwocA=
+github.com/DharitriOne/drt-chain-vm-common-go v0.0.2 h1:HtY2CLV3K/z3f4FJ6rj4kcDzx2+IhX/17+Q1/F/dvpI=
+github.com/DharitriOne/drt-chain-vm-common-go v0.0.2/go.mod h1:V0JTS01XXjuho5Ry4YOOf6MgNcM7JQXxV4qqeeuotzY=
 github.com/aead/siphash v1.0.1/go.mod h1:Nywa3cDsYNNK3gaciGTWPwHt0wlpNV15vwmswBAUSII=
 github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
 github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=

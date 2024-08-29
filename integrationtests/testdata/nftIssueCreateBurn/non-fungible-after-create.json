@@ -1,7 +1,7 @@
 {
   "identifier": "NON-abcd-02",
   "token": "NON-abcd",
-  "type": "NonFungibleDCT",
+  "type": "NonFungibleDCDT",
   "nonce": 2,
   "timestamp": 5600,
   "data": {

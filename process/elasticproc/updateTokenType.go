@@ -13,7 +13,7 @@ import (
 )
 
 func (ei *elasticProcessor) indexTokens(tokensData []*data.TokenInfo, updateNFTData []*data.NFTDataUpdate, buffSlice *data.BufferSlice, shardID uint32) error {
-	err := ei.prepareAndAddSerializedDataForTokens(tokensData, updateNFTData, buffSlice, elasticIndexer.DCTsIndex)
+	err := ei.prepareAndAddSerializedDataForTokens(tokensData, updateNFTData, buffSlice, elasticIndexer.DCDTsIndex)
 	if err != nil {
 		return err
 	}
@@ -22,7 +22,7 @@ func (ei *elasticProcessor) indexTokens(tokensData []*data.TokenInfo, updateNFTD
 		return err
 	}
 
-	err = ei.addTokenType(tokensData, elasticIndexer.AccountsDCTIndex, shardID)
+	err = ei.addTokenType(tokensData, elasticIndexer.AccountsDCDTIndex, shardID)
 	if err != nil {
 		return err
 	}
@@ -48,7 +48,7 @@ func (ei *elasticProcessor) addTokenType(tokensData []*data.TokenInfo, index str
 	}(time.Now())
 
 	for _, td := range tokensData {
-		if td.Type == core.FungibleDCT {
+		if td.Type == core.FungibleDCDT {
 			continue
 		}
 

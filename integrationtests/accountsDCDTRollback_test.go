@@ -13,23 +13,23 @@ import (
 	"github.com/DharitriOne/drt-chain-core-go/core"
 	"github.com/DharitriOne/drt-chain-core-go/data/alteredAccount"
 	dataBlock "github.com/DharitriOne/drt-chain-core-go/data/block"
-	"github.com/DharitriOne/drt-chain-core-go/data/dct"
+	"github.com/DharitriOne/drt-chain-core-go/data/dcdt"
 	"github.com/DharitriOne/drt-chain-core-go/data/outport"
 	"github.com/DharitriOne/drt-chain-core-go/data/transaction"
 	indexerdata "github.com/DharitriOne/drt-chain-es-indexer-go/process/dataindexer"
 	"github.com/stretchr/testify/require"
 )
 
-func TestAccountsDCTDeleteOnRollback(t *testing.T) {
+func TestAccountsDCDTDeleteOnRollback(t *testing.T) {
 	setLogLevelDebug()
 
 	esClient, err := createESClient(esURL)
 	require.Nil(t, err)
 
-	dctToken := &dct.DCToken{
+	dcdtToken := &dcdt.DCDigitalToken{
 		Value:      big.NewInt(1000),
 		Properties: []byte("3032"),
-		TokenMetaData: &dct.MetaData{
+		TokenMetaData: &dcdt.MetaData{
 			Creator: []byte("creator"),
 		},
 	}
@@ -55,7 +55,7 @@ func TestAccountsDCTDeleteOnRollback(t *testing.T) {
 	require.Nil(t, err)
 
 	// CREATE SEMI-FUNGIBLE TOKEN
-	dctDataBytes, _ := json.Marshal(dctToken)
+	dcdtDataBytes, _ := json.Marshal(dcdtToken)
 	pool := &outport.TransactionPool{
 		Logs: []*outport.LogData{
 			{
@@ -64,8 +64,8 @@ func TestAccountsDCTDeleteOnRollback(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(addr),
-							Identifier: []byte(core.BuiltInFunctionDCTNFTCreate),
-							Topics:     [][]byte{[]byte("TOKEN-eeee"), big.NewInt(2).Bytes(), big.NewInt(1).Bytes(), dctDataBytes},
+							Identifier: []byte(core.BuiltInFunctionDCDTNFTCreate),
+							Topics:     [][]byte{[]byte("TOKEN-eeee"), big.NewInt(2).Bytes(), big.NewInt(1).Bytes(), dcdtDataBytes},
 						},
 						nil,
 					},
@@ -86,15 +86,15 @@ func TestAccountsDCTDeleteOnRollback(t *testing.T) {
 
 	ids := []string{fmt.Sprintf("%s-TOKEN-eeee-02", addr)}
 	genericResponse := &GenericResponse{}
-	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCTIndex, true, genericResponse)
+	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCDTIndex, true, genericResponse)
 	require.Nil(t, err)
-	require.JSONEq(t, readExpectedResult("./testdata/accountsDCTRollback/account-after-create.json"), string(genericResponse.Docs[0].Source))
+	require.JSONEq(t, readExpectedResult("./testdata/accountsDCDTRollback/account-after-create.json"), string(genericResponse.Docs[0].Source))
 
 	// DO ROLLBACK
-	err = esProc.RemoveAccountsDCT(5040, 2)
+	err = esProc.RemoveAccountsDCDT(5040, 2)
 	require.Nil(t, err)
 
-	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCTIndex, true, genericResponse)
+	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCDTIndex, true, genericResponse)
 	require.Nil(t, err)
 	require.False(t, genericResponse.Docs[0].Found)
 }

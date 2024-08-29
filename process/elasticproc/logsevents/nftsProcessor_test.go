@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/DharitriOne/drt-chain-core-go/core"
-	"github.com/DharitriOne/drt-chain-core-go/data/dct"
+	"github.com/DharitriOne/drt-chain-core-go/data/dcdt"
 	"github.com/DharitriOne/drt-chain-core-go/data/transaction"
 	"github.com/DharitriOne/drt-chain-es-indexer-go/data"
 	"github.com/DharitriOne/drt-chain-es-indexer-go/mock"
@@ -18,18 +18,18 @@ import (
 func TestNftsProcessor_processLogAndEventsNFTs(t *testing.T) {
 	t.Parallel()
 
-	dctData := &dct.DCToken{
-		TokenMetaData: &dct.MetaData{
+	dcdtData := &dcdt.DCDigitalToken{
+		TokenMetaData: &dcdt.MetaData{
 			Creator: []byte("creator"),
 		},
 	}
-	dctDataBytes, _ := json.Marshal(dctData)
+	dcdtDataBytes, _ := json.Marshal(dcdtData)
 
 	nonce := uint64(19)
 	event := &transaction.Event{
 		Address:    []byte("addr"),
-		Identifier: []byte(core.BuiltInFunctionDCTNFTCreate),
-		Topics:     [][]byte{[]byte("my-token"), big.NewInt(0).SetUint64(nonce).Bytes(), big.NewInt(1).Bytes(), dctDataBytes},
+		Identifier: []byte(core.BuiltInFunctionDCDTNFTCreate),
+		Topics:     [][]byte{[]byte("my-token"), big.NewInt(0).SetUint64(nonce).Bytes(), big.NewInt(1).Bytes(), dcdtDataBytes},
 	}
 
 	nftsProc := newNFTsProcessor(&mock.PubkeyConverterMock{}, &mock.MarshalizerMock{})
@@ -65,7 +65,7 @@ func TestNftsProcessor_processLogAndEventsNFTs_Wipe(t *testing.T) {
 
 	events := &transaction.Event{
 		Address:    []byte("addr"),
-		Identifier: []byte(core.BuiltInFunctionDCTWipe),
+		Identifier: []byte(core.BuiltInFunctionDCDTWipe),
 		Topics:     [][]byte{[]byte("nft-0123"), big.NewInt(0).SetUint64(nonce).Bytes(), big.NewInt(1).Bytes(), []byte("receiver")},
 	}
 

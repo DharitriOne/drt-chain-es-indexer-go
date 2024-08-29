@@ -167,7 +167,7 @@ func TestDataIndexer_RevertIndexedBlock(t *testing.T) {
 			countMap[2]++
 			return nil
 		},
-		RemoveAccountsDCTCalled: func(headerTimestamp uint64) error {
+		RemoveAccountsDCDTCalled: func(headerTimestamp uint64) error {
 			countMap[3]++
 			return nil
 		},

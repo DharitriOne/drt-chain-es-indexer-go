@@ -43,8 +43,8 @@ func (ap *accountsProcessor) SerializeAccounts(accounts map[string]*data.Account
 	return nil
 }
 
-// SerializeAccountsDCT will serialize the provided accounts and nfts updates in a way that Elasticsearch expects a bulk request
-func (ap *accountsProcessor) SerializeAccountsDCT(
+// SerializeAccountsDCDT will serialize the provided accounts and nfts updates in a way that Elasticsearch expects a bulk request
+func (ap *accountsProcessor) SerializeAccountsDCDT(
 	accounts map[string]*data.AccountInfo,
 	updateNFTData []*data.NFTDataUpdate,
 	buffSlice *data.BufferSlice,
@@ -70,18 +70,18 @@ func (ap *accountsProcessor) SerializeAccountsDCT(
 	return nil
 }
 
-func prepareSerializedAccount(acc *data.AccountInfo, isDCT bool, index string) ([]byte, []byte, error) {
-	if (acc.Balance == "0" || acc.Balance == "") && isDCT {
-		meta, serializedData := prepareDeleteAccountInfo(acc, isDCT, index)
+func prepareSerializedAccount(acc *data.AccountInfo, isDCDT bool, index string) ([]byte, []byte, error) {
+	if (acc.Balance == "0" || acc.Balance == "") && isDCDT {
+		meta, serializedData := prepareDeleteAccountInfo(acc, isDCDT, index)
 		return meta, serializedData, nil
 	}
 
-	return prepareSerializedAccountInfo(acc, isDCT, index)
+	return prepareSerializedAccountInfo(acc, isDCDT, index)
 }
 
-func prepareDeleteAccountInfo(acct *data.AccountInfo, isDCT bool, index string) ([]byte, []byte) {
+func prepareDeleteAccountInfo(acct *data.AccountInfo, isDCDT bool, index string) ([]byte, []byte) {
 	id := acct.Address
-	if isDCT {
+	if isDCDT {
 		hexEncodedNonce := converters.EncodeNonceToHex(acct.TokenNonce)
 		id += fmt.Sprintf("-%s-%s", acct.TokenName, hexEncodedNonce)
 	}
@@ -114,11 +114,11 @@ func prepareDeleteAccountInfo(acct *data.AccountInfo, isDCT bool, index string) 
 
 func prepareSerializedAccountInfo(
 	account *data.AccountInfo,
-	isDCTAccount bool,
+	isDCDTAccount bool,
 	index string,
 ) ([]byte, []byte, error) {
 	id := account.Address
-	if isDCTAccount {
+	if isDCDTAccount {
 		hexEncodedNonce := converters.EncodeNonceToHex(account.TokenNonce)
 		id += fmt.Sprintf("-%s-%s", account.TokenName, hexEncodedNonce)
 	}
@@ -180,8 +180,8 @@ func prepareSerializedAccountBalanceHistory(
 ) ([]byte, []byte, error) {
 	id := account.Address
 
-	isDCT := account.Token != ""
-	if isDCT {
+	isDCDT := account.Token != ""
+	if isDCDT {
 		hexEncodedNonce := converters.EncodeNonceToHex(account.TokenNonce)
 		id += fmt.Sprintf("-%s-%s", account.Token, hexEncodedNonce)
 	}

@@ -11,36 +11,36 @@ import (
 const (
 	numIssueLogTopics = 4
 
-	issueFungibleDCTFunc     = "issue"
-	issueSemiFungibleDCTFunc = "issueSemiFungible"
-	issueNonFungibleDCTFunc  = "issueNonFungible"
-	registerMetaDCTFunc      = "registerMetaDCT"
-	changeSFTToMetaDCTFunc   = "changeSFTToMetaDCT"
-	transferOwnershipFunc    = "transferOwnership"
-	registerAndSetRolesFunc  = "registerAndSetAllRoles"
+	issueFungibleDCDTFunc     = "issue"
+	issueSemiFungibleDCDTFunc = "issueSemiFungible"
+	issueNonFungibleDCDTFunc  = "issueNonFungible"
+	registerMetaDCDTFunc      = "registerMetaDCDT"
+	changeSFTToMetaDCDTFunc   = "changeSFTToMetaDCDT"
+	transferOwnershipFunc     = "transferOwnership"
+	registerAndSetRolesFunc   = "registerAndSetAllRoles"
 )
 
-type dctIssueProcessor struct {
+type dcdtIssueProcessor struct {
 	pubkeyConverter            core.PubkeyConverter
 	issueOperationsIdentifiers map[string]struct{}
 }
 
-func newDCTIssueProcessor(pubkeyConverter core.PubkeyConverter) *dctIssueProcessor {
-	return &dctIssueProcessor{
+func newDCDTIssueProcessor(pubkeyConverter core.PubkeyConverter) *dcdtIssueProcessor {
+	return &dcdtIssueProcessor{
 		pubkeyConverter: pubkeyConverter,
 		issueOperationsIdentifiers: map[string]struct{}{
-			issueFungibleDCTFunc:     {},
-			issueSemiFungibleDCTFunc: {},
-			issueNonFungibleDCTFunc:  {},
-			registerMetaDCTFunc:      {},
-			changeSFTToMetaDCTFunc:   {},
-			transferOwnershipFunc:    {},
-			registerAndSetRolesFunc:  {},
+			issueFungibleDCDTFunc:     {},
+			issueSemiFungibleDCDTFunc: {},
+			issueNonFungibleDCDTFunc:  {},
+			registerMetaDCDTFunc:      {},
+			changeSFTToMetaDCDTFunc:   {},
+			transferOwnershipFunc:     {},
+			registerAndSetRolesFunc:   {},
 		},
 	}
 }
 
-func (eip *dctIssueProcessor) processEvent(args *argsProcessEvent) argOutputProcessEvent {
+func (eip *dcdtIssueProcessor) processEvent(args *argsProcessEvent) argOutputProcessEvent {
 	if args.selfShardID != core.MetachainShardId {
 		return argOutputProcessEvent{}
 	}

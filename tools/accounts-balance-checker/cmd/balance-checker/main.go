@@ -33,9 +33,9 @@ var (
 		Name:  "check-balance-rewa",
 		Usage: "If set, the checker will verify all the balance value of the accounts with REWA",
 	}
-	checkBalanceDCT = cli.BoolFlag{
-		Name:  "check-balance-dct",
-		Usage: "If set, the checker wil verify all the balance value of the accounts with DCT",
+	checkBalanceDCDT = cli.BoolFlag{
+		Name:  "check-balance-dcdt",
+		Usage: "If set, the checker wil verify all the balance value of the accounts with DCDT",
 	}
 	repairFlag = cli.BoolFlag{
 		Name:  "repair",
@@ -69,7 +69,7 @@ func main() {
 	app.Flags = []cli.Flag{
 		configFile,
 		checkBalanceREWA,
-		checkBalanceDCT,
+		checkBalanceDCDT,
 		logLevel,
 		repairFlag,
 		logSaveFile,
@@ -122,16 +122,16 @@ func startCheck(ctx *cli.Context) {
 		log.Info("done")
 	}
 
-	shouldCheckBalanceDCT := ctx.Bool(checkBalanceDCT.Name)
-	if shouldCheckBalanceDCT {
-		err = balanceChecker.CheckDCTBalances()
+	shouldCheckBalanceDCDT := ctx.Bool(checkBalanceDCDT.Name)
+	if shouldCheckBalanceDCDT {
+		err = balanceChecker.CheckDCDTBalances()
 		if err != nil {
-			log.Error("cannot check balance DCT", "error", err)
+			log.Error("cannot check balance DCDT", "error", err)
 			return
 		}
 	}
 
-	if !shouldCheckBalanceREWA && !shouldCheckBalanceDCT {
+	if !shouldCheckBalanceREWA && !shouldCheckBalanceDCDT {
 		log.Error("no flag has been provided")
 	}
 

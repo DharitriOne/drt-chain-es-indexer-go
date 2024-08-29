@@ -23,10 +23,10 @@
   "tokens": [
     "MEXFARM-ccb252-078b"
   ],
-  "dctValues": [
+  "dcdtValues": [
     "15482888667631250736752"
   ],
-  "dctValuesNum": [
+  "dcdtValuesNum": [
     15482.88866763125
   ],
   "receivers": [
@@ -35,6 +35,6 @@
   "receiversShardIDs": [
     2
   ],
-  "operation": "DCTNFTTransfer",
+  "operation": "DCDTNFTTransfer",
   "function": "claimRewards"
 }

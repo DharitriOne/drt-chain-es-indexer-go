@@ -4,9 +4,9 @@ go 1.20
 
 require (
 	github.com/DharitriOne/drt-chain-communication-go v0.0.1
-	github.com/DharitriOne/drt-chain-core-go v0.0.1
+	github.com/DharitriOne/drt-chain-core-go v0.0.2
 	github.com/DharitriOne/drt-chain-logger-go v0.0.1
-	github.com/DharitriOne/drt-chain-vm-common-go v0.0.1
+	github.com/DharitriOne/drt-chain-vm-common-go v0.0.2
 	github.com/elastic/go-elasticsearch/v7 v7.12.0
 	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.9.1

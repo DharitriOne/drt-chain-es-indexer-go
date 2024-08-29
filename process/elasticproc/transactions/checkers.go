@@ -39,9 +39,9 @@ func checkTxsProcessorArg(args *ArgsTransactionProcessor) error {
 	return nil
 }
 
-func areDCTValuesOK(values []string) bool {
+func areDCDTValuesOK(values []string) bool {
 	for _, value := range values {
-		if len(value) > data.MaxDCTValueLength {
+		if len(value) > data.MaxDCDTValueLength {
 			return false
 		}
 	}

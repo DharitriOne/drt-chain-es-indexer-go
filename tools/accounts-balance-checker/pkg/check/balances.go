@@ -1,12 +1,12 @@
 package check
 
-type balancesDCT map[string]map[string]string
+type balancesDCDT map[string]map[string]string
 
-func newBalancesDCT() balancesDCT {
+func newBalancesDCDT() balancesDCDT {
 	return make(map[string]map[string]string)
 }
 
-func (be balancesDCT) extractBalancesFromResponse(responseAccounts *ResponseAccounts) {
+func (be balancesDCDT) extractBalancesFromResponse(responseAccounts *ResponseAccounts) {
 	for _, hit := range responseAccounts.Hits.Hits {
 		tokenIdentifier := hit.Source.TokenIdentifier
 		if hit.Source.TokenIdentifier == "" {
@@ -17,7 +17,7 @@ func (be balancesDCT) extractBalancesFromResponse(responseAccounts *ResponseAcco
 	}
 }
 
-func (be balancesDCT) add(address, tokenIdentifier, value string) {
+func (be balancesDCDT) add(address, tokenIdentifier, value string) {
 	_, ok := be[address]
 	if !ok {
 		be[address] = map[string]string{}
@@ -26,10 +26,10 @@ func (be balancesDCT) add(address, tokenIdentifier, value string) {
 	be[address][tokenIdentifier] = value
 }
 
-func (be balancesDCT) getBalancesForAddress(address string) map[string]string {
+func (be balancesDCDT) getBalancesForAddress(address string) map[string]string {
 	return be[address]
 }
 
-func (be balancesDCT) getBalance(address, tokenIdentifier string) string {
+func (be balancesDCDT) getBalance(address, tokenIdentifier string) string {
 	return be[address][tokenIdentifier]
 }

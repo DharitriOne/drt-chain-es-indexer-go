@@ -4,7 +4,7 @@
   "token": "TTTT-abcd",
   "issuer": "moa1l29zsl2dqq988kvr2y0xlfv9ydgnvhzkatfd8ccalpag265pje8q7lelre",
   "currentOwner": "moa1l29zsl2dqq988kvr2y0xlfv9ydgnvhzkatfd8ccalpag265pje8q7lelre",
-  "type": "SemiFungibleDCT",
+  "type": "SemiFungibleDCDT",
   "timestamp": 5040,
   "ownersHistory": [
     {

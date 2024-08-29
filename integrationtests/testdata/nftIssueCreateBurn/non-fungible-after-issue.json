@@ -4,7 +4,7 @@
   "token": "NON-abcd",
   "issuer": "moa1ju8pkvg57cwdmjsjx58jlmnuf4l9yspstrhr9tgsrt98n9edpm2qx8wte4",
   "currentOwner": "moa1ju8pkvg57cwdmjsjx58jlmnuf4l9yspstrhr9tgsrt98n9edpm2qx8wte4",
-  "type": "NonFungibleDCT",
+  "type": "NonFungibleDCDT",
   "timestamp": 5040,
   "ownersHistory": [
     {

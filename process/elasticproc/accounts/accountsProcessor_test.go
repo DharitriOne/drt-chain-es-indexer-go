@@ -64,9 +64,9 @@ func TestAccountsProcessor_GetAccountsWithNil(t *testing.T) {
 
 	ap, _ := NewAccountsProcessor(mock.NewPubkeyConverterMock(32), balanceConverter)
 
-	regularAccounts, dctAccounts := ap.GetAccounts(nil)
+	regularAccounts, dcdtAccounts := ap.GetAccounts(nil)
 	require.Len(t, regularAccounts, 0)
-	require.Len(t, dctAccounts, 0)
+	require.Len(t, dcdtAccounts, 0)
 }
 
 func TestAccountsProcessor_PrepareRegularAccountsMapWithNil(t *testing.T) {
@@ -78,14 +78,14 @@ func TestAccountsProcessor_PrepareRegularAccountsMapWithNil(t *testing.T) {
 	require.Len(t, accountsInfo, 0)
 }
 
-func TestGetDCTInfo(t *testing.T) {
+func TestGetDCDTInfo(t *testing.T) {
 	t.Parallel()
 
 	ap, _ := NewAccountsProcessor(mock.NewPubkeyConverterMock(32), balanceConverter)
 	require.NotNil(t, ap)
 
 	tokenIdentifier := "token-001"
-	wrapAccount := &data.AccountDCT{
+	wrapAccount := &data.AccountDCDT{
 		Account: &alteredAccount.AlteredAccount{
 			Address: "",
 			Balance: "1000",
@@ -100,20 +100,20 @@ func TestGetDCTInfo(t *testing.T) {
 		},
 		TokenIdentifier: tokenIdentifier,
 	}
-	balance, prop, _, err := ap.getDCTInfo(wrapAccount)
+	balance, prop, _, err := ap.getDCDTInfo(wrapAccount)
 	require.Nil(t, err)
 	require.Equal(t, big.NewInt(1000), balance)
 	require.Equal(t, "6f6b", prop)
 }
 
-func TestGetDCTInfoNFT(t *testing.T) {
+func TestGetDCDTInfoNFT(t *testing.T) {
 	t.Parallel()
 
 	ap, _ := NewAccountsProcessor(mock.NewPubkeyConverterMock(32), balanceConverter)
 	require.NotNil(t, ap)
 
 	tokenIdentifier := "token-001"
-	wrapAccount := &data.AccountDCT{
+	wrapAccount := &data.AccountDCDT{
 		Account: &alteredAccount.AlteredAccount{
 			Address: "",
 			Balance: "1",
@@ -131,13 +131,13 @@ func TestGetDCTInfoNFT(t *testing.T) {
 		IsNFTOperation:  true,
 		NFTNonce:        10,
 	}
-	balance, prop, _, err := ap.getDCTInfo(wrapAccount)
+	balance, prop, _, err := ap.getDCDTInfo(wrapAccount)
 	require.Nil(t, err)
 	require.Equal(t, big.NewInt(1), balance)
 	require.Equal(t, "6f6b", prop)
 }
 
-func TestGetDCTInfoNFTWithMetaData(t *testing.T) {
+func TestGetDCDTInfoNFTWithMetaData(t *testing.T) {
 	t.Parallel()
 
 	pubKeyConverter := mock.NewPubkeyConverterMock(32)
@@ -148,7 +148,7 @@ func TestGetDCTInfoNFTWithMetaData(t *testing.T) {
 	creator := "010101"
 
 	tokenIdentifier := "token-001"
-	wrapAccount := &data.AccountDCT{
+	wrapAccount := &data.AccountDCDT{
 		Account: &alteredAccount.AlteredAccount{
 			Address: "",
 			Balance: "1",
@@ -172,7 +172,7 @@ func TestGetDCTInfoNFTWithMetaData(t *testing.T) {
 		IsNFTOperation:  true,
 		NFTNonce:        10,
 	}
-	balance, prop, metaData, err := ap.getDCTInfo(wrapAccount)
+	balance, prop, metaData, err := ap.getDCDTInfo(wrapAccount)
 	require.Nil(t, err)
 	require.Equal(t, big.NewInt(1), balance)
 	require.Equal(t, "6f6b", prop)
@@ -195,8 +195,8 @@ func TestAccountsProcessor_GetAccountsREWAAccounts(t *testing.T) {
 	ap, _ := NewAccountsProcessor(mock.NewPubkeyConverterMock(32), balanceConverter)
 	require.NotNil(t, ap)
 
-	accounts, dctAccounts := ap.GetAccounts(alteredAccountsMap)
-	require.Equal(t, 0, len(dctAccounts))
+	accounts, dcdtAccounts := ap.GetAccounts(alteredAccountsMap)
+	require.Equal(t, 0, len(dcdtAccounts))
 	require.Equal(t, []*data.Account{
 		{
 			UserAccount: acc,
@@ -204,7 +204,7 @@ func TestAccountsProcessor_GetAccountsREWAAccounts(t *testing.T) {
 	}, accounts)
 }
 
-func TestAccountsProcessor_GetAccountsDCTAccount(t *testing.T) {
+func TestAccountsProcessor_GetAccountsDCDTAccount(t *testing.T) {
 	t.Parallel()
 
 	addr := "aaaabbbb"
@@ -223,14 +223,14 @@ func TestAccountsProcessor_GetAccountsDCTAccount(t *testing.T) {
 	ap, _ := NewAccountsProcessor(mock.NewPubkeyConverterMock(32), balanceConverter)
 	require.NotNil(t, ap)
 
-	accounts, dctAccounts := ap.GetAccounts(alteredAccountsMap)
+	accounts, dcdtAccounts := ap.GetAccounts(alteredAccountsMap)
 	require.Equal(t, 0, len(accounts))
-	require.Equal(t, []*data.AccountDCT{
+	require.Equal(t, []*data.AccountDCDT{
 		{Account: acc, TokenIdentifier: "token"},
-	}, dctAccounts)
+	}, dcdtAccounts)
 }
 
-func TestAccountsProcessor_GetAccountsDCTAccountNewAccountShouldBeInRegularAccounts(t *testing.T) {
+func TestAccountsProcessor_GetAccountsDCDTAccountNewAccountShouldBeInRegularAccounts(t *testing.T) {
 	t.Parallel()
 
 	addr := "aaaabbbb"
@@ -247,11 +247,11 @@ func TestAccountsProcessor_GetAccountsDCTAccountNewAccountShouldBeInRegularAccou
 	ap, _ := NewAccountsProcessor(mock.NewPubkeyConverterMock(32), balanceConverter)
 	require.NotNil(t, ap)
 
-	accounts, dctAccounts := ap.GetAccounts(alteredAccountsMap)
+	accounts, dcdtAccounts := ap.GetAccounts(alteredAccountsMap)
 	require.Equal(t, 1, len(accounts))
-	require.Equal(t, []*data.AccountDCT{
+	require.Equal(t, []*data.AccountDCDT{
 		{Account: acc, TokenIdentifier: "token"},
-	}, dctAccounts)
+	}, dcdtAccounts)
 
 	require.Equal(t, []*data.Account{
 		{UserAccount: acc, IsSender: false},
@@ -300,7 +300,7 @@ func TestAccountsProcessor_PrepareAccountsMapREWA(t *testing.T) {
 		res[addr])
 }
 
-func TestAccountsProcessor_PrepareAccountsMapDCT(t *testing.T) {
+func TestAccountsProcessor_PrepareAccountsMapDCDT(t *testing.T) {
 	t.Parallel()
 
 	addr := "aaaabbbb"
@@ -331,13 +331,13 @@ func TestAccountsProcessor_PrepareAccountsMapDCT(t *testing.T) {
 	ap, _ := NewAccountsProcessor(mock.NewPubkeyConverterMock(32), balanceConverter)
 	require.NotNil(t, ap)
 
-	accountsDCT := []*data.AccountDCT{
+	accountsDCDT := []*data.AccountDCDT{
 		{Account: account, TokenIdentifier: "token", IsNFTOperation: true, NFTNonce: 15},
 		{Account: account, TokenIdentifier: "token", IsNFTOperation: true, NFTNonce: 16},
 	}
 
 	tagsCount := tags.NewTagsCount()
-	res, _ := ap.PrepareAccountsMapDCT(123, accountsDCT, tagsCount, 0)
+	res, _ := ap.PrepareAccountsMapDCDT(123, accountsDCDT, tagsCount, 0)
 	require.Len(t, res, 2)
 
 	balanceNum, _ := balanceConverter.ComputeBalanceAsFloat(big.NewInt(1000))

@@ -16,7 +16,7 @@ func TestProcessNFTProperties_Update(t *testing.T) {
 
 	event := &transaction.Event{
 		Address:    []byte("addr"),
-		Identifier: []byte("DCTNFTUpdateAttributes"),
+		Identifier: []byte("DCDTNFTUpdateAttributes"),
 		Topics:     [][]byte{[]byte("TOUC-aaaa"), big.NewInt(1).Bytes(), nil, []byte("new-something")},
 	}
 	args := &argsProcessEvent{
@@ -40,7 +40,7 @@ func TestProcessNFTProperties_AddUris(t *testing.T) {
 
 	event := &transaction.Event{
 		Address:    []byte("addr"),
-		Identifier: []byte("DCTNFTAddURI"),
+		Identifier: []byte("DCDTNFTAddURI"),
 		Topics:     [][]byte{[]byte("TOUC-aaaa"), big.NewInt(1).Bytes(), nil, []byte("uri1"), []byte("uri2")},
 	}
 	args := &argsProcessEvent{
@@ -65,7 +65,7 @@ func TestProcessNFTProperties_FreezeAndUnFreeze(t *testing.T) {
 	// freeze
 	event := &transaction.Event{
 		Address:    []byte("addr"),
-		Identifier: []byte("DCTFreeze"),
+		Identifier: []byte("DCDTFreeze"),
 		Topics:     [][]byte{[]byte("TOUC-aaaa"), big.NewInt(1).Bytes(), nil, []byte("something")},
 	}
 	args := &argsProcessEvent{
@@ -82,7 +82,7 @@ func TestProcessNFTProperties_FreezeAndUnFreeze(t *testing.T) {
 	// unFreeze
 	event = &transaction.Event{
 		Address:    []byte("addr"),
-		Identifier: []byte("DCTUnFreeze"),
+		Identifier: []byte("DCDTUnFreeze"),
 		Topics:     [][]byte{[]byte("TOUC-aaaa"), big.NewInt(1).Bytes(), nil, []byte("something")},
 	}
 	args = &argsProcessEvent{
@@ -99,14 +99,14 @@ func TestProcessPauseAndUnPauseEvent(t *testing.T) {
 	npp := &nftsPropertiesProc{}
 
 	// test pause event
-	result := npp.processPauseAndUnPauseEvent(core.BuiltInFunctionDCTPause, "token1")
+	result := npp.processPauseAndUnPauseEvent(core.BuiltInFunctionDCDTPause, "token1")
 	require.True(t, result.processed, "Expected processed to be true")
 	require.Equal(t, "token1", result.updatePropNFT.Identifier, "Expected identifier to be token1")
 	require.True(t, result.updatePropNFT.Pause, "Expected pause to be true")
 	require.False(t, result.updatePropNFT.UnPause, "Expected unpause to be false")
 
 	// test unpause event
-	result = npp.processPauseAndUnPauseEvent(core.BuiltInFunctionDCTUnPause, "token2")
+	result = npp.processPauseAndUnPauseEvent(core.BuiltInFunctionDCDTUnPause, "token2")
 	require.True(t, result.processed, "Expected processed to be true")
 	require.Equal(t, "token2", result.updatePropNFT.Identifier, "Expected identifier to be token2")
 	require.False(t, result.updatePropNFT.Pause, "Expected pause to be false")

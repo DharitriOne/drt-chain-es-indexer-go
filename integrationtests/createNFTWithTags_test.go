@@ -13,7 +13,7 @@ import (
 	"github.com/DharitriOne/drt-chain-core-go/core"
 	"github.com/DharitriOne/drt-chain-core-go/data/alteredAccount"
 	dataBlock "github.com/DharitriOne/drt-chain-core-go/data/block"
-	"github.com/DharitriOne/drt-chain-core-go/data/dct"
+	"github.com/DharitriOne/drt-chain-core-go/data/dcdt"
 	"github.com/DharitriOne/drt-chain-core-go/data/outport"
 	"github.com/DharitriOne/drt-chain-core-go/data/transaction"
 	indexerdata "github.com/DharitriOne/drt-chain-es-indexer-go/process/dataindexer"
@@ -26,10 +26,10 @@ func TestCreateNFTWithTags(t *testing.T) {
 	esClient, err := createESClient(esURL)
 	require.Nil(t, err)
 
-	dctToken := &dct.DCToken{
+	dcdtToken := &dcdt.DCDigitalToken{
 		Value:      big.NewInt(1000),
 		Properties: []byte("3032"),
-		TokenMetaData: &dct.MetaData{
+		TokenMetaData: &dcdt.MetaData{
 			Creator:    []byte("creator"),
 			Attributes: []byte("tags:hello,something,do,music,art,gallery;metadata:QmZ2QqaGq4bqsEzs5JLTjRmmvR2GAR4qXJZBN8ibfDdaud"),
 		},
@@ -44,7 +44,7 @@ func TestCreateNFTWithTags(t *testing.T) {
 	esProc, err := CreateElasticProcessor(esClient)
 	require.Nil(t, err)
 
-	dctDataBytes, _ := json.Marshal(dctToken)
+	dcdtDataBytes, _ := json.Marshal(dcdtToken)
 
 	// CREATE A FIRST NFT WITH THE TAGS
 	address1 := "moa1v7e552pz9py4hv6raan0c4jflez3e6csdmzcgrncg0qrnk4tywvsd7fcgz"
@@ -57,8 +57,8 @@ func TestCreateNFTWithTags(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(address1),
-							Identifier: []byte(core.BuiltInFunctionDCTNFTCreate),
-							Topics:     [][]byte{[]byte("DESK-abcd"), big.NewInt(1).Bytes(), big.NewInt(1).Bytes(), dctDataBytes},
+							Identifier: []byte(core.BuiltInFunctionDCDTNFTCreate),
+							Topics:     [][]byte{[]byte("DESK-abcd"), big.NewInt(1).Bytes(), big.NewInt(1).Bytes(), dcdtDataBytes},
 						},
 						nil,
 					},
@@ -95,9 +95,9 @@ func TestCreateNFTWithTags(t *testing.T) {
 
 	ids := []string{fmt.Sprintf("%s-DESK-abcd-01", address1)}
 	genericResponse := &GenericResponse{}
-	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCTIndex, true, genericResponse)
+	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCDTIndex, true, genericResponse)
 	require.Nil(t, err)
-	require.JSONEq(t, readExpectedResult("./testdata/createNFTWithTags/accounts-dct-address-balance.json"), string(genericResponse.Docs[0].Source))
+	require.JSONEq(t, readExpectedResult("./testdata/createNFTWithTags/accounts-dcdt-address-balance.json"), string(genericResponse.Docs[0].Source))
 
 	ids = []string{"bXVzaWM=", "aGVsbG8=", "Z2FsbGVyeQ==", "ZG8=", "YXJ0", "c29tZXRoaW5n"}
 	genericResponse = &GenericResponse{}
@@ -126,8 +126,8 @@ func TestCreateNFTWithTags(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(address1),
-							Identifier: []byte(core.BuiltInFunctionDCTNFTCreate),
-							Topics:     [][]byte{[]byte("DESK-abcd"), big.NewInt(2).Bytes(), big.NewInt(1).Bytes(), dctDataBytes},
+							Identifier: []byte(core.BuiltInFunctionDCDTNFTCreate),
+							Topics:     [][]byte{[]byte("DESK-abcd"), big.NewInt(2).Bytes(), big.NewInt(1).Bytes(), dcdtDataBytes},
 						},
 						nil,
 					},
@@ -176,8 +176,8 @@ func TestCreateNFTWithTags(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(address1),
-							Identifier: []byte(core.BuiltInFunctionDCTNFTCreate),
-							Topics:     [][]byte{[]byte("DESK-abcd"), big.NewInt(3).Bytes(), big.NewInt(1).Bytes(), dctDataBytes},
+							Identifier: []byte(core.BuiltInFunctionDCDTNFTCreate),
+							Topics:     [][]byte{[]byte("DESK-abcd"), big.NewInt(3).Bytes(), big.NewInt(1).Bytes(), dcdtDataBytes},
 						},
 						nil,
 					},

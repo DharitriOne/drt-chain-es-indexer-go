@@ -22,10 +22,10 @@ var Transactions = Object{
 			"data": Object{
 				"type": "text",
 			},
-			"dctValues": Object{
+			"dcdtValues": Object{
 				"type": "keyword",
 			},
-			"dctValuesNum": Object{
+			"dcdtValuesNum": Object{
 				"type": "double",
 			},
 			"fee": Object{

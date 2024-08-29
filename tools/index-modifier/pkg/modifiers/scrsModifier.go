@@ -118,7 +118,7 @@ func (sm *scrsModifier) prepareSCRForIndexing(scr *data.ScResult) error {
 
 	scr.Operation = res.Operation
 	scr.Function = res.Function
-	scr.DCTValues = res.DCTValues
+	scr.DCDTValues = res.DCDTValues
 	scr.Tokens = res.Tokens
 	scr.ReceiversShardIDs = res.ReceiversShardID
 

@@ -10,31 +10,31 @@ import (
 const (
 	tokenTopicsIndex            = 0
 	propertyPairStep            = 2
-	dctPropertiesStartIndex     = 2
+	dcdtPropertiesStartIndex    = 2
 	minTopicsPropertiesAndRoles = 4
 	upgradePropertiesEvent      = "upgradeProperties"
 )
 
-type dctPropertiesProc struct {
+type dcdtPropertiesProc struct {
 	pubKeyConverter            core.PubkeyConverter
 	rolesOperationsIdentifiers map[string]struct{}
 }
 
-func newDctPropertiesProcessor(pubKeyConverter core.PubkeyConverter) *dctPropertiesProc {
-	return &dctPropertiesProc{
+func newDcdtPropertiesProcessor(pubKeyConverter core.PubkeyConverter) *dcdtPropertiesProc {
+	return &dcdtPropertiesProc{
 		pubKeyConverter: pubKeyConverter,
 		rolesOperationsIdentifiers: map[string]struct{}{
-			core.BuiltInFunctionSetDCTRole:                 {},
-			core.BuiltInFunctionUnSetDCTRole:               {},
-			core.BuiltInFunctionDCTNFTCreateRoleTransfer:   {},
-			upgradePropertiesEvent:                         {},
-			vmcommon.BuiltInFunctionDCTUnSetBurnRoleForAll: {},
-			vmcommon.BuiltInFunctionDCTSetBurnRoleForAll:   {},
+			core.BuiltInFunctionSetDCDTRole:                 {},
+			core.BuiltInFunctionUnSetDCDTRole:               {},
+			core.BuiltInFunctionDCDTNFTCreateRoleTransfer:   {},
+			upgradePropertiesEvent:                          {},
+			vmcommon.BuiltInFunctionDCDTUnSetBurnRoleForAll: {},
+			vmcommon.BuiltInFunctionDCDTSetBurnRoleForAll:   {},
 		},
 	}
 }
 
-func (epp *dctPropertiesProc) processEvent(args *argsProcessEvent) argOutputProcessEvent {
+func (epp *dcdtPropertiesProc) processEvent(args *argsProcessEvent) argOutputProcessEvent {
 	identifier := string(args.event.GetIdentifier())
 	_, ok := epp.rolesOperationsIdentifiers[identifier]
 	if !ok {
@@ -52,7 +52,7 @@ func (epp *dctPropertiesProc) processEvent(args *argsProcessEvent) argOutputProc
 		return epp.extractTokenProperties(args)
 	}
 
-	if identifier == core.BuiltInFunctionDCTNFTCreateRoleTransfer {
+	if identifier == core.BuiltInFunctionDCDTNFTCreateRoleTransfer {
 		return epp.extractDataNFTCreateRoleTransfer(args)
 	}
 
@@ -70,12 +70,12 @@ func (epp *dctPropertiesProc) processEvent(args *argsProcessEvent) argOutputProc
 		}
 	}
 
-	shouldAddRole := identifier == core.BuiltInFunctionSetDCTRole || identifier == vmcommon.BuiltInFunctionDCTSetBurnRoleForAll
+	shouldAddRole := identifier == core.BuiltInFunctionSetDCDTRole || identifier == vmcommon.BuiltInFunctionDCDTSetBurnRoleForAll
 
 	addrBech := epp.pubKeyConverter.SilentEncode(args.event.GetAddress(), log)
 	for _, roleBytes := range rolesBytes {
 		addr := addrBech
-		if string(roleBytes) == vmcommon.DCTRoleBurnForAll {
+		if string(roleBytes) == vmcommon.DCDTRoleBurnForAll {
 			addr = ""
 		}
 
@@ -87,21 +87,21 @@ func (epp *dctPropertiesProc) processEvent(args *argsProcessEvent) argOutputProc
 	}
 }
 
-func (epp *dctPropertiesProc) extractDataNFTCreateRoleTransfer(args *argsProcessEvent) argOutputProcessEvent {
+func (epp *dcdtPropertiesProc) extractDataNFTCreateRoleTransfer(args *argsProcessEvent) argOutputProcessEvent {
 	topics := args.event.GetTopics()
 
 	addrBech := epp.pubKeyConverter.SilentEncode(args.event.GetAddress(), log)
 	shouldAddCreateRole := bytesToBool(topics[3])
-	args.tokenRolesAndProperties.AddRole(string(topics[tokenTopicsIndex]), addrBech, core.DCTRoleNFTCreate, shouldAddCreateRole)
+	args.tokenRolesAndProperties.AddRole(string(topics[tokenTopicsIndex]), addrBech, core.DCDTRoleNFTCreate, shouldAddCreateRole)
 
 	return argOutputProcessEvent{
 		processed: true,
 	}
 }
 
-func (epp *dctPropertiesProc) extractTokenProperties(args *argsProcessEvent) argOutputProcessEvent {
+func (epp *dcdtPropertiesProc) extractTokenProperties(args *argsProcessEvent) argOutputProcessEvent {
 	topics := args.event.GetTopics()
-	properties := topics[dctPropertiesStartIndex:]
+	properties := topics[dcdtPropertiesStartIndex:]
 	propertiesMap := make(map[string]bool)
 	for i := 0; i < len(properties); i += propertyPairStep {
 		property := string(properties[i])

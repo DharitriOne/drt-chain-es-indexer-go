@@ -22,7 +22,7 @@ func TestLogsAndEventsProcessor_SerializeLogs(t *testing.T) {
 			Events: []*data.Event{
 				{
 					Address:    "61646472",
-					Identifier: core.BuiltInFunctionDCTNFTTransfer,
+					Identifier: core.BuiltInFunctionDCDTNFTTransfer,
 					Topics:     [][]byte{[]byte("my-token"), big.NewInt(0).SetUint64(1).Bytes(), []byte("receiver")},
 					Data:       []byte("data"),
 					Order:      0,
@@ -36,7 +36,7 @@ func TestLogsAndEventsProcessor_SerializeLogs(t *testing.T) {
 	require.Nil(t, err)
 
 	expectedRes := `{ "update" : { "_index":"logs", "_id" : "747848617368" } }
-{"scripted_upsert": true, "script": {"source": "if ('create' == ctx.op) {ctx._source = params.log} else {if (ctx._source.containsKey('timestamp')) {if (ctx._source.timestamp <= params.log.timestamp) {ctx._source = params.log}} else {ctx._source = params.log}}","lang": "painless","params": { "log": {"address":"61646472657373","events":[{"address":"61646472","identifier":"DCTNFTTransfer","topics":["bXktdG9rZW4=","AQ==","cmVjZWl2ZXI="],"data":"ZGF0YQ==","order":0}],"timestamp":1234} }},"upsert": {}}
+{"scripted_upsert": true, "script": {"source": "if ('create' == ctx.op) {ctx._source = params.log} else {if (ctx._source.containsKey('timestamp')) {if (ctx._source.timestamp <= params.log.timestamp) {ctx._source = params.log}} else {ctx._source = params.log}}","lang": "painless","params": { "log": {"address":"61646472657373","events":[{"address":"61646472","identifier":"DCDTNFTTransfer","topics":["bXktdG9rZW4=","AQ==","cmVjZWl2ZXI="],"data":"ZGF0YQ==","order":0}],"timestamp":1234} }},"upsert": {}}
 `
 	require.Equal(t, expectedRes, buffSlice.Buffers()[0].String())
 }
@@ -71,7 +71,7 @@ func TestSerializeTokens(t *testing.T) {
 		Token:        "TKN-01234",
 		Timestamp:    50000,
 		Issuer:       "moa123",
-		Type:         core.SemiFungibleDCT,
+		Type:         core.SemiFungibleDCDT,
 		CurrentOwner: "moa123",
 		OwnersHistory: []*data.OwnerData{
 			{
@@ -86,7 +86,7 @@ func TestSerializeTokens(t *testing.T) {
 		Token:        "TKN2-51234",
 		Issuer:       "moa1231213123",
 		Timestamp:    60000,
-		Type:         core.NonFungibleDCT,
+		Type:         core.NonFungibleDCDT,
 		CurrentOwner: "abde123456",
 		OwnersHistory: []*data.OwnerData{
 			{
@@ -104,9 +104,9 @@ func TestSerializeTokens(t *testing.T) {
 	require.Equal(t, 1, len(buffSlice.Buffers()))
 
 	expectedRes := `{ "update" : { "_index":"tokens", "_id" : "TKN-01234" } }
-{"script": {"source": "if (ctx._source.containsKey('roles')) {HashMap roles = ctx._source.roles;ctx._source = params.token;ctx._source.roles = roles}","lang": "painless","params": {"token": {"name":"TokenName","ticker":"TKN","token":"TKN-01234","issuer":"moa123","currentOwner":"moa123","numDecimals":0,"type":"SemiFungibleDCT","timestamp":50000,"ownersHistory":[{"address":"moa123","timestamp":50000}]}}},"upsert": {"name":"TokenName","ticker":"TKN","token":"TKN-01234","issuer":"moa123","currentOwner":"moa123","numDecimals":0,"type":"SemiFungibleDCT","timestamp":50000,"ownersHistory":[{"address":"moa123","timestamp":50000}]}}
+{"script": {"source": "if (ctx._source.containsKey('roles')) {HashMap roles = ctx._source.roles;ctx._source = params.token;ctx._source.roles = roles}","lang": "painless","params": {"token": {"name":"TokenName","ticker":"TKN","token":"TKN-01234","issuer":"moa123","currentOwner":"moa123","numDecimals":0,"type":"SemiFungibleDCDT","timestamp":50000,"ownersHistory":[{"address":"moa123","timestamp":50000}]}}},"upsert": {"name":"TokenName","ticker":"TKN","token":"TKN-01234","issuer":"moa123","currentOwner":"moa123","numDecimals":0,"type":"SemiFungibleDCDT","timestamp":50000,"ownersHistory":[{"address":"moa123","timestamp":50000}]}}
 { "update" : { "_index":"tokens", "_id" : "TKN2-51234" } }
-{"script": {"source": "if (!ctx._source.containsKey('ownersHistory')) {ctx._source.ownersHistory = [params.elem]} else {ctx._source.ownersHistory.add(params.elem)}ctx._source.currentOwner = params.owner","lang": "painless","params": {"elem": {"address":"abde123456","timestamp":60000}, "owner": "abde123456"}},"upsert": {"name":"Token2","ticker":"TKN2","token":"TKN2-51234","issuer":"moa1231213123","currentOwner":"abde123456","numDecimals":0,"type":"NonFungibleDCT","timestamp":60000,"ownersHistory":[{"address":"abde123456","timestamp":60000}]}}
+{"script": {"source": "if (!ctx._source.containsKey('ownersHistory')) {ctx._source.ownersHistory = [params.elem]} else {ctx._source.ownersHistory.add(params.elem)}ctx._source.currentOwner = params.owner","lang": "painless","params": {"elem": {"address":"abde123456","timestamp":60000}, "owner": "abde123456"}},"upsert": {"name":"Token2","ticker":"TKN2","token":"TKN2-51234","issuer":"moa1231213123","currentOwner":"abde123456","numDecimals":0,"type":"NonFungibleDCDT","timestamp":60000,"ownersHistory":[{"address":"abde123456","timestamp":60000}]}}
 `
 	require.Equal(t, expectedRes, buffSlice.Buffers()[0].String())
 }

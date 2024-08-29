@@ -41,26 +41,26 @@ func NewAccountsProcessor(
 	}, nil
 }
 
-// GetAccounts will get accounts for regular operations and dct operations
-func (ap *accountsProcessor) GetAccounts(coreAlteredAccounts map[string]*alteredAccount.AlteredAccount) ([]*data.Account, []*data.AccountDCT) {
+// GetAccounts will get accounts for regular operations and dcdt operations
+func (ap *accountsProcessor) GetAccounts(coreAlteredAccounts map[string]*alteredAccount.AlteredAccount) ([]*data.Account, []*data.AccountDCDT) {
 	regularAccountsToIndex := make([]*data.Account, 0)
-	accountsToIndexDCT := make([]*data.AccountDCT, 0)
+	accountsToIndexDCDT := make([]*data.AccountDCDT, 0)
 
 	for _, alteredAccount := range coreAlteredAccounts {
-		regularAccounts, dctAccounts := splitAlteredAccounts(alteredAccount)
+		regularAccounts, dcdtAccounts := splitAlteredAccounts(alteredAccount)
 
 		regularAccountsToIndex = append(regularAccountsToIndex, regularAccounts...)
-		accountsToIndexDCT = append(accountsToIndexDCT, dctAccounts...)
+		accountsToIndexDCDT = append(accountsToIndexDCDT, dcdtAccounts...)
 	}
 
-	return regularAccountsToIndex, accountsToIndexDCT
+	return regularAccountsToIndex, accountsToIndexDCDT
 }
 
 func splitAlteredAccounts(
 	account *alteredAccount.AlteredAccount,
-) ([]*data.Account, []*data.AccountDCT) {
+) ([]*data.Account, []*data.AccountDCDT) {
 	regularAccountsToIndex := make([]*data.Account, 0)
-	accountsToIndexDCT := make([]*data.AccountDCT, 0)
+	accountsToIndexDCDT := make([]*data.AccountDCDT, 0)
 
 	isSender, balanceChanged := false, false
 	if account.AdditionalData != nil {
@@ -69,7 +69,7 @@ func splitAlteredAccounts(
 		log.Debug("accountsProcessor.splitAlteredAccounts - nil additional data")
 	}
 
-	//if the balance of the DCT receiver is 0 the receiver is a new account most probably, and we should index it
+	//if the balance of the DCDT receiver is 0 the receiver is a new account most probably, and we should index it
 	ignoreAddress := !balanceChanged && notZeroBalance(account.Balance) && !isSender
 	if !ignoreAddress {
 		regularAccountsToIndex = append(regularAccountsToIndex, &data.Account{
@@ -79,21 +79,21 @@ func splitAlteredAccounts(
 	}
 
 	for _, info := range account.Tokens {
-		accountDCT := &data.AccountDCT{
+		accountDCDT := &data.AccountDCDT{
 			Account:         account,
 			TokenIdentifier: info.Identifier,
 			NFTNonce:        info.Nonce,
 			IsSender:        isSender,
 		}
 		if info.AdditionalData != nil {
-			accountDCT.IsNFTCreate = info.AdditionalData.IsNFTCreate
+			accountDCDT.IsNFTCreate = info.AdditionalData.IsNFTCreate
 		}
 
-		accountsToIndexDCT = append(accountsToIndexDCT, accountDCT)
+		accountsToIndexDCDT = append(accountsToIndexDCDT, accountDCDT)
 
 	}
 
-	return regularAccountsToIndex, accountsToIndexDCT
+	return regularAccountsToIndex, accountsToIndexDCDT
 }
 
 func notZeroBalance(balance string) bool {
@@ -177,51 +177,51 @@ func (ap *accountsProcessor) addDeveloperRewardsInAccount(additionalData *altere
 	account.DeveloperRewardsNum = developerRewardsNum
 }
 
-// PrepareAccountsMapDCT will prepare a map of accounts with DCT tokens
-func (ap *accountsProcessor) PrepareAccountsMapDCT(
+// PrepareAccountsMapDCDT will prepare a map of accounts with DCDT tokens
+func (ap *accountsProcessor) PrepareAccountsMapDCDT(
 	timestamp uint64,
-	accounts []*data.AccountDCT,
+	accounts []*data.AccountDCDT,
 	tagsCount data.CountTags,
 	shardID uint32,
 ) (map[string]*data.AccountInfo, data.TokensHandler) {
 	tokensData := data.NewTokensInfo()
-	accountsDCTMap := make(map[string]*data.AccountInfo)
-	for _, accountDCT := range accounts {
-		address := accountDCT.Account.Address
+	accountsDCDTMap := make(map[string]*data.AccountInfo)
+	for _, accountDCDT := range accounts {
+		address := accountDCDT.Account.Address
 		addressBytes, err := ap.addressPubkeyConverter.Decode(address)
 		if err != nil {
-			log.Warn("accountsProcessor.PrepareAccountsMapDCT: cannot decode address", "address", address, "error", err)
+			log.Warn("accountsProcessor.PrepareAccountsMapDCDT: cannot decode address", "address", address, "error", err)
 			continue
 		}
-		balance, properties, tokenMetaData, err := ap.getDCTInfo(accountDCT)
+		balance, properties, tokenMetaData, err := ap.getDCDTInfo(accountDCDT)
 		if err != nil {
-			log.Warn("accountsProcessor.PrepareAccountsMapDCT: cannot get dct info from account",
+			log.Warn("accountsProcessor.PrepareAccountsMapDCDT: cannot get dcdt info from account",
 				"address", address,
 				"error", err.Error())
 			continue
 		}
 
-		if tokenMetaData != nil && accountDCT.IsNFTCreate {
+		if tokenMetaData != nil && accountDCDT.IsNFTCreate {
 			tagsCount.ParseTags(tokenMetaData.Tags)
 		}
 
-		tokenIdentifier := converters.ComputeTokenIdentifier(accountDCT.TokenIdentifier, accountDCT.NFTNonce)
+		tokenIdentifier := converters.ComputeTokenIdentifier(accountDCDT.TokenIdentifier, accountDCDT.NFTNonce)
 		balanceNum, err := ap.balanceConverter.ConvertBigValueToFloat(balance)
 		if err != nil {
-			log.Warn("accountsProcessor.PrepareAccountsMapDCT: cannot compute dct balance as num",
+			log.Warn("accountsProcessor.PrepareAccountsMapDCDT: cannot compute dcdt balance as num",
 				"balance", balance, "address", address, "error", err, "token", tokenIdentifier)
 		}
 
 		acc := &data.AccountInfo{
 			Address:         address,
-			TokenName:       accountDCT.TokenIdentifier,
+			TokenName:       accountDCDT.TokenIdentifier,
 			TokenIdentifier: tokenIdentifier,
-			TokenNonce:      accountDCT.NFTNonce,
+			TokenNonce:      accountDCDT.NFTNonce,
 			Balance:         balance.String(),
 			BalanceNum:      balanceNum,
 			Properties:      properties,
 			Frozen:          isFrozen(properties),
-			IsSender:        accountDCT.IsSender,
+			IsSender:        accountDCDT.IsSender,
 			IsSmartContract: core.IsSmartContractAddress(addressBytes),
 			Data:            tokenMetaData,
 			Timestamp:       time.Duration(timestamp),
@@ -229,23 +229,23 @@ func (ap *accountsProcessor) PrepareAccountsMapDCT(
 		}
 
 		if acc.TokenNonce == 0 {
-			acc.Type = core.FungibleDCT
+			acc.Type = core.FungibleDCDT
 		}
 
-		keyInMap := fmt.Sprintf("%s-%s-%d", acc.Address, acc.TokenName, accountDCT.NFTNonce)
-		accountsDCTMap[keyInMap] = acc
+		keyInMap := fmt.Sprintf("%s-%s-%d", acc.Address, acc.TokenName, accountDCDT.NFTNonce)
+		accountsDCDTMap[keyInMap] = acc
 
 		if acc.Balance == "0" || acc.Balance == "" {
 			continue
 		}
 
 		tokensData.Add(&data.TokenInfo{
-			Token:      accountDCT.TokenIdentifier,
+			Token:      accountDCDT.TokenIdentifier,
 			Identifier: tokenIdentifier,
 		})
 	}
 
-	return accountsDCTMap, tokensData
+	return accountsDCDTMap, tokensData
 }
 
 // PrepareAccountsHistory will prepare a map of accounts history balance from a map of accounts
@@ -274,17 +274,17 @@ func (ap *accountsProcessor) PrepareAccountsHistory(
 	return accountsMap
 }
 
-func (ap *accountsProcessor) getDCTInfo(accountDCT *data.AccountDCT) (*big.Int, string, *data.TokenMetaData, error) {
-	if accountDCT.TokenIdentifier == "" {
+func (ap *accountsProcessor) getDCDTInfo(accountDCDT *data.AccountDCDT) (*big.Int, string, *data.TokenMetaData, error) {
+	if accountDCDT.TokenIdentifier == "" {
 		return big.NewInt(0), "", nil, nil
 	}
-	if accountDCT.IsNFTOperation && accountDCT.NFTNonce == 0 {
+	if accountDCDT.IsNFTOperation && accountDCDT.NFTNonce == 0 {
 		return big.NewInt(0), "", nil, nil
 	}
 
 	accountTokenData := &alteredAccount.AccountTokenData{}
-	for _, tokenData := range accountDCT.Account.Tokens {
-		if tokenData.Identifier == accountDCT.TokenIdentifier && tokenData.Nonce == accountDCT.NFTNonce {
+	for _, tokenData := range accountDCDT.Account.Tokens {
+		if tokenData.Identifier == accountDCDT.TokenIdentifier && tokenData.Nonce == accountDCDT.NFTNonce {
 			accountTokenData = tokenData
 		}
 	}

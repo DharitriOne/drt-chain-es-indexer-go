@@ -11,15 +11,15 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestIssueDCTProcessor(t *testing.T) {
+func TestIssueDCDTProcessor(t *testing.T) {
 	t.Parallel()
 
-	dctIssueProc := newDCTIssueProcessor(&mock.PubkeyConverterMock{})
+	dcdtIssueProc := newDCDTIssueProcessor(&mock.PubkeyConverterMock{})
 
 	event := &transaction.Event{
 		Address:    []byte("addr"),
-		Identifier: []byte(issueNonFungibleDCTFunc),
-		Topics:     [][]byte{[]byte("MYTOKEN-abcd"), []byte("my-token"), []byte("MYTOKEN"), []byte(core.NonFungibleDCT)},
+		Identifier: []byte(issueNonFungibleDCDTFunc),
+		Topics:     [][]byte{[]byte("MYTOKEN-abcd"), []byte("my-token"), []byte("MYTOKEN"), []byte(core.NonFungibleDCDT)},
 	}
 	args := &argsProcessEvent{
 		timestamp:   1234,
@@ -27,14 +27,14 @@ func TestIssueDCTProcessor(t *testing.T) {
 		selfShardID: core.MetachainShardId,
 	}
 
-	res := dctIssueProc.processEvent(args)
+	res := dcdtIssueProc.processEvent(args)
 
 	require.Equal(t, &data.TokenInfo{
 		Token:        "MYTOKEN-abcd",
 		Name:         "my-token",
 		Ticker:       "MYTOKEN",
 		Timestamp:    time.Duration(1234),
-		Type:         core.NonFungibleDCT,
+		Type:         core.NonFungibleDCDT,
 		Issuer:       "61646472",
 		CurrentOwner: "61646472",
 		OwnersHistory: []*data.OwnerData{
@@ -47,15 +47,15 @@ func TestIssueDCTProcessor(t *testing.T) {
 	}, res.tokenInfo)
 }
 
-func TestIssueDCTProcessor_TransferOwnership(t *testing.T) {
+func TestIssueDCDTProcessor_TransferOwnership(t *testing.T) {
 	t.Parallel()
 
-	dctIssueProc := newDCTIssueProcessor(&mock.PubkeyConverterMock{})
+	dcdtIssueProc := newDCDTIssueProcessor(&mock.PubkeyConverterMock{})
 
 	event := &transaction.Event{
 		Address:    []byte("addr"),
 		Identifier: []byte(transferOwnershipFunc),
-		Topics:     [][]byte{[]byte("MYTOKEN-abcd"), []byte("my-token"), []byte("MYTOKEN"), []byte(core.NonFungibleDCT), []byte("newOwner")},
+		Topics:     [][]byte{[]byte("MYTOKEN-abcd"), []byte("my-token"), []byte("MYTOKEN"), []byte(core.NonFungibleDCDT), []byte("newOwner")},
 	}
 	args := &argsProcessEvent{
 		timestamp:   1234,
@@ -63,14 +63,14 @@ func TestIssueDCTProcessor_TransferOwnership(t *testing.T) {
 		selfShardID: core.MetachainShardId,
 	}
 
-	res := dctIssueProc.processEvent(args)
+	res := dcdtIssueProc.processEvent(args)
 
 	require.Equal(t, &data.TokenInfo{
 		Token:        "MYTOKEN-abcd",
 		Name:         "my-token",
 		Ticker:       "MYTOKEN",
 		Timestamp:    time.Duration(1234),
-		Type:         core.NonFungibleDCT,
+		Type:         core.NonFungibleDCDT,
 		Issuer:       "61646472",
 		CurrentOwner: "6e65774f776e6572",
 		OwnersHistory: []*data.OwnerData{
@@ -84,15 +84,15 @@ func TestIssueDCTProcessor_TransferOwnership(t *testing.T) {
 	}, res.tokenInfo)
 }
 
-func TestIssueDCTProcessor_EventWithShardID0ShouldBeIgnored(t *testing.T) {
+func TestIssueDCDTProcessor_EventWithShardID0ShouldBeIgnored(t *testing.T) {
 	t.Parallel()
 
-	dctIssueProc := newDCTIssueProcessor(&mock.PubkeyConverterMock{})
+	dcdtIssueProc := newDCDTIssueProcessor(&mock.PubkeyConverterMock{})
 
 	event := &transaction.Event{
 		Address:    []byte("addr"),
 		Identifier: []byte(transferOwnershipFunc),
-		Topics:     [][]byte{[]byte("MYTOKEN-abcd"), []byte("my-token"), []byte("MYTOKEN"), []byte(core.NonFungibleDCT), []byte("newOwner")},
+		Topics:     [][]byte{[]byte("MYTOKEN-abcd"), []byte("my-token"), []byte("MYTOKEN"), []byte(core.NonFungibleDCDT), []byte("newOwner")},
 	}
 	args := &argsProcessEvent{
 		timestamp:   1234,
@@ -100,6 +100,6 @@ func TestIssueDCTProcessor_EventWithShardID0ShouldBeIgnored(t *testing.T) {
 		selfShardID: 0,
 	}
 
-	res := dctIssueProc.processEvent(args)
+	res := dcdtIssueProc.processEvent(args)
 	require.False(t, res.processed)
 }

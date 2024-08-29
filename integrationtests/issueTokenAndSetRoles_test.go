@@ -45,7 +45,7 @@ func TestIssueTokenAndSetRole(t *testing.T) {
 						{
 							Address:    decodeAddress(address1),
 							Identifier: []byte("issueSemiFungible"),
-							Topics:     [][]byte{[]byte("TOK-abcd"), []byte("semi-token"), []byte("SEMI"), []byte(core.SemiFungibleDCT)},
+							Topics:     [][]byte{[]byte("TOK-abcd"), []byte("semi-token"), []byte("SEMI"), []byte(core.SemiFungibleDCDT)},
 						},
 						{
 							Address:    decodeAddress(address1),
@@ -78,8 +78,8 @@ func TestIssueTokenAndSetRole(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(address1),
-							Identifier: []byte(core.BuiltInFunctionSetDCTRole),
-							Topics:     [][]byte{[]byte("TOK-abcd"), big.NewInt(0).Bytes(), big.NewInt(0).Bytes(), []byte(core.DCTRoleNFTCreate), []byte(core.DCTRoleNFTBurn)},
+							Identifier: []byte(core.BuiltInFunctionSetDCDTRole),
+							Topics:     [][]byte{[]byte("TOK-abcd"), big.NewInt(0).Bytes(), big.NewInt(0).Bytes(), []byte(core.DCDTRoleNFTCreate), []byte(core.DCDTRoleNFTBurn)},
 						},
 						nil,
 					},
@@ -108,12 +108,12 @@ func TestIssueTokenAndSetRole(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(address1),
-							Identifier: []byte(core.BuiltInFunctionDCTNFTCreateRoleTransfer),
+							Identifier: []byte(core.BuiltInFunctionDCDTNFTCreateRoleTransfer),
 							Topics:     [][]byte{[]byte("TOK-abcd"), big.NewInt(0).Bytes(), big.NewInt(0).Bytes(), []byte("false")},
 						},
 						{
 							Address:    decodeAddress(address2),
-							Identifier: []byte(core.BuiltInFunctionDCTNFTCreateRoleTransfer),
+							Identifier: []byte(core.BuiltInFunctionDCDTNFTCreateRoleTransfer),
 							Topics:     [][]byte{[]byte("TOK-abcd"), big.NewInt(0).Bytes(), big.NewInt(0).Bytes(), []byte("true")},
 						},
 					},
@@ -142,8 +142,8 @@ func TestIssueTokenAndSetRole(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(address1),
-							Identifier: []byte(core.BuiltInFunctionUnSetDCTRole),
-							Topics:     [][]byte{[]byte("TOK-abcd"), big.NewInt(0).Bytes(), big.NewInt(0).Bytes(), []byte(core.DCTRoleNFTBurn)},
+							Identifier: []byte(core.BuiltInFunctionUnSetDCDTRole),
+							Topics:     [][]byte{[]byte("TOK-abcd"), big.NewInt(0).Bytes(), big.NewInt(0).Bytes(), []byte(core.DCDTRoleNFTBurn)},
 						},
 						nil,
 					},
@@ -190,8 +190,8 @@ func TestIssueSetRolesEventAndAfterTokenIssue(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(address1),
-							Identifier: []byte(core.BuiltInFunctionSetDCTRole),
-							Topics:     [][]byte{[]byte("TTT-abcd"), big.NewInt(0).Bytes(), big.NewInt(0).Bytes(), []byte(core.DCTRoleNFTCreate), []byte(core.DCTRoleNFTBurn)},
+							Identifier: []byte(core.BuiltInFunctionSetDCDTRole),
+							Topics:     [][]byte{[]byte("TTT-abcd"), big.NewInt(0).Bytes(), big.NewInt(0).Bytes(), []byte(core.DCDTRoleNFTCreate), []byte(core.DCDTRoleNFTBurn)},
 						},
 						nil,
 					},
@@ -221,7 +221,7 @@ func TestIssueSetRolesEventAndAfterTokenIssue(t *testing.T) {
 						{
 							Address:    decodeAddress(address1),
 							Identifier: []byte("issueSemiFungible"),
-							Topics:     [][]byte{[]byte("TTT-abcd"), []byte("semi-token"), []byte("SEMI"), []byte(core.SemiFungibleDCT)},
+							Topics:     [][]byte{[]byte("TTT-abcd"), []byte("semi-token"), []byte("SEMI"), []byte(core.SemiFungibleDCDT)},
 						},
 						nil,
 					},

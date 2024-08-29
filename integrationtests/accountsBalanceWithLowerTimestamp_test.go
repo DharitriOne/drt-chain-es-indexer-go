@@ -12,7 +12,7 @@ import (
 	"github.com/DharitriOne/drt-chain-core-go/core"
 	"github.com/DharitriOne/drt-chain-core-go/data/alteredAccount"
 	dataBlock "github.com/DharitriOne/drt-chain-core-go/data/block"
-	"github.com/DharitriOne/drt-chain-core-go/data/dct"
+	"github.com/DharitriOne/drt-chain-core-go/data/dcdt"
 	"github.com/DharitriOne/drt-chain-core-go/data/outport"
 	"github.com/DharitriOne/drt-chain-core-go/data/transaction"
 	indexerdata "github.com/DharitriOne/drt-chain-es-indexer-go/process/dataindexer"
@@ -25,10 +25,10 @@ func TestIndexAccountsBalance(t *testing.T) {
 	esClient, err := createESClient(esURL)
 	require.Nil(t, err)
 
-	// ################ UPDATE ACCOUNT-DCT BALANCE ##########################
+	// ################ UPDATE ACCOUNT-DCDT BALANCE ##########################
 	body := &dataBlock.Body{}
 
-	dctToken := &dct.DCToken{
+	dcdtToken := &dcdt.DCDigitalToken{
 		Value: big.NewInt(1000),
 	}
 
@@ -69,7 +69,7 @@ func TestIndexAccountsBalance(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    []byte("eeeebbbb"),
-							Identifier: []byte(core.BuiltInFunctionDCTTransfer),
+							Identifier: []byte(core.BuiltInFunctionDCDTTransfer),
 							Topics:     [][]byte{[]byte("TTTT-abcd"), nil, big.NewInt(1).Bytes()},
 						},
 						nil,
@@ -90,9 +90,9 @@ func TestIndexAccountsBalance(t *testing.T) {
 
 	ids = []string{fmt.Sprintf("%s-TTTT-abcd-00", addr)}
 	genericResponse = &GenericResponse{}
-	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCTIndex, true, genericResponse)
+	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCDTIndex, true, genericResponse)
 	require.Nil(t, err)
-	require.JSONEq(t, readExpectedResult("./testdata/accountsBalanceWithLowerTimestamp/account-balance-dct-first-update.json"), string(genericResponse.Docs[0].Source))
+	require.JSONEq(t, readExpectedResult("./testdata/accountsBalanceWithLowerTimestamp/account-balance-dcdt-first-update.json"), string(genericResponse.Docs[0].Source))
 
 	//////////////////// INDEX BALANCE LOWER TIMESTAMP ///////////////////////////////////
 
@@ -113,9 +113,9 @@ func TestIndexAccountsBalance(t *testing.T) {
 
 	ids = []string{fmt.Sprintf("%s-TTTT-abcd-00", addr)}
 	genericResponse = &GenericResponse{}
-	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCTIndex, true, genericResponse)
+	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCDTIndex, true, genericResponse)
 	require.Nil(t, err)
-	require.JSONEq(t, readExpectedResult("./testdata/accountsBalanceWithLowerTimestamp/account-balance-dct-first-update.json"), string(genericResponse.Docs[0].Source))
+	require.JSONEq(t, readExpectedResult("./testdata/accountsBalanceWithLowerTimestamp/account-balance-dcdt-first-update.json"), string(genericResponse.Docs[0].Source))
 
 	//////////////////// INDEX BALANCE HIGHER TIMESTAMP ///////////////////////////////////
 	header = &dataBlock.Header{
@@ -145,7 +145,7 @@ func TestIndexAccountsBalance(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(addr2),
-							Identifier: []byte(core.BuiltInFunctionDCTTransfer),
+							Identifier: []byte(core.BuiltInFunctionDCDTTransfer),
 							Topics:     [][]byte{[]byte("TTTT-abcd"), nil, big.NewInt(1).Bytes()},
 						},
 						nil,
@@ -175,13 +175,13 @@ func TestIndexAccountsBalance(t *testing.T) {
 
 	ids = []string{fmt.Sprintf("%s-TTTT-abcd-00", addr)}
 	genericResponse = &GenericResponse{}
-	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCTIndex, true, genericResponse)
+	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCDTIndex, true, genericResponse)
 	require.Nil(t, err)
-	require.JSONEq(t, readExpectedResult("./testdata/accountsBalanceWithLowerTimestamp/account-balance-dct-second-update.json"), string(genericResponse.Docs[0].Source))
+	require.JSONEq(t, readExpectedResult("./testdata/accountsBalanceWithLowerTimestamp/account-balance-dcdt-second-update.json"), string(genericResponse.Docs[0].Source))
 
-	//////////////////////// DELETE DCT BALANCE LOWER TIMESTAMP ////////////////
+	//////////////////////// DELETE DCDT BALANCE LOWER TIMESTAMP ////////////////
 
-	dctToken.Value = big.NewInt(0)
+	dcdtToken.Value = big.NewInt(0)
 	esProc, err = CreateElasticProcessor(esClient)
 	require.Nil(t, err)
 
@@ -210,7 +210,7 @@ func TestIndexAccountsBalance(t *testing.T) {
 
 	ids = []string{fmt.Sprintf("%s-TTTT-abcd-00", addr)}
 	genericResponse = &GenericResponse{}
-	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCTIndex, true, genericResponse)
+	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCDTIndex, true, genericResponse)
 	require.Nil(t, err)
 	require.False(t, genericResponse.Docs[0].Found)
 }

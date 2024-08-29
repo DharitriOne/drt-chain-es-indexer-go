@@ -4,7 +4,7 @@ package data
 type AlteredAccount struct {
 	BalanceChange   bool
 	IsSender        bool
-	IsDCTOperation  bool
+	IsDCDTOperation bool
 	IsNFTOperation  bool
 	IsNFTCreate     bool
 	TokenIdentifier string
@@ -41,7 +41,7 @@ func (aa *alteredAccounts) Add(key string, account *AlteredAccount) {
 		return
 	}
 
-	isTokenOperation := account.IsDCTOperation || account.IsNFTOperation
+	isTokenOperation := account.IsDCDTOperation || account.IsNFTOperation
 	if !isTokenOperation {
 		aa.altered[key][0].IsSender = aa.altered[key][0].IsSender || account.IsSender
 		return
@@ -49,8 +49,8 @@ func (aa *alteredAccounts) Add(key string, account *AlteredAccount) {
 
 	senderCount := 0
 	for _, elem := range aa.altered[key] {
-		newElementIsTokenOperation := account.IsDCTOperation || account.IsNFTOperation
-		oldElementIsTokenOperation := elem.IsDCTOperation || elem.IsNFTOperation
+		newElementIsTokenOperation := account.IsDCDTOperation || account.IsNFTOperation
+		oldElementIsTokenOperation := elem.IsDCDTOperation || elem.IsNFTOperation
 
 		isSender := elem.IsSender || account.IsSender
 		if isSender {
@@ -62,7 +62,7 @@ func (aa *alteredAccounts) Add(key string, account *AlteredAccount) {
 			elem.TokenIdentifier = account.TokenIdentifier
 			elem.NFTNonce = account.NFTNonce
 			elem.IsNFTOperation = account.IsNFTOperation
-			elem.IsDCTOperation = account.IsDCTOperation
+			elem.IsDCDTOperation = account.IsDCDTOperation
 			elem.IsSender = isSender
 			elem.Type = account.Type
 			elem.IsNFTCreate = account.IsNFTCreate

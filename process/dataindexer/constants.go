@@ -23,17 +23,17 @@ const (
 	ReceiptsIndex = "receipts"
 	// ScResultsIndex is the Elasticsearch index for the smart contract results
 	ScResultsIndex = "scresults"
-	// AccountsDCTIndex is the Elasticsearch index for the accounts with DCT balance
-	AccountsDCTIndex = "accountsdct"
-	// AccountsDCTHistoryIndex is the Elasticsearch index for the accounts history information with DCT balance
-	AccountsDCTHistoryIndex = "accountsdcthistory"
+	// AccountsDCDTIndex is the Elasticsearch index for the accounts with DCDT balance
+	AccountsDCDTIndex = "accountsdcdt"
+	// AccountsDCDTHistoryIndex is the Elasticsearch index for the accounts history information with DCDT balance
+	AccountsDCDTHistoryIndex = "accountsdcdthistory"
 	// EpochInfoIndex is the Elasticsearch index for the epoch information
 	EpochInfoIndex = "epochinfo"
 	// OpenDistroIndex is the Elasticsearch index for opendistro
 	OpenDistroIndex = "opendistro"
 	// SCDeploysIndex is the Elasticsearch index for the smart contracts deploy information
 	SCDeploysIndex = "scdeploys"
-	// TokensIndex is the Elasticsearch index for the DCT tokens
+	// TokensIndex is the Elasticsearch index for the DCDT tokens
 	TokensIndex = "tokens"
 	// TagsIndex is the Elasticsearch index for NFTs tags
 	TagsIndex = "tags"
@@ -43,8 +43,8 @@ const (
 	DelegatorsIndex = "delegators"
 	// OperationsIndex is the Elasticsearch index for transactions and smart contract results
 	OperationsIndex = "operations"
-	// DCTsIndex is the Elasticsearch index for dct tokens
-	DCTsIndex = "dcts"
+	// DCDTsIndex is the Elasticsearch index for dcdt tokens
+	DCDTsIndex = "dcdts"
 	// ValuesIndex is the Elasticsearch index for extra indexer information
 	ValuesIndex = "values"
 	// EventsIndex is the Elasticsearch index for log events
@@ -66,10 +66,10 @@ const (
 	AccountsPolicy = "accounts_policy"
 	// AccountsHistoryPolicy is the Elasticsearch policy for the accounts history information
 	AccountsHistoryPolicy = "accountshistory_policy"
-	// AccountsDCTPolicy is the Elasticsearch policy for the accounts with DCT balance
-	AccountsDCTPolicy = "accountsdct_policy"
-	// AccountsDCTHistoryPolicy is the Elasticsearch policy for the accounts history information with DCT
-	AccountsDCTHistoryPolicy = "accountsdcthistory_policy"
+	// AccountsDCDTPolicy is the Elasticsearch policy for the accounts with DCDT balance
+	AccountsDCDTPolicy = "accountsdcdt_policy"
+	// AccountsDCDTHistoryPolicy is the Elasticsearch policy for the accounts history information with DCDT
+	AccountsDCDTHistoryPolicy = "accountsdcdthistory_policy"
 	// ScResultsPolicy is the Elasticsearch policy for the smart contract results
 	ScResultsPolicy = "scresults_policy"
 	// ReceiptsPolicy is the Elasticsearch policy for the receipts

@@ -1,5 +1,5 @@
 {
-  "dcts-000001": {
+  "dcdts-000001": {
     "mappings": {
       "properties": {
         "currentOwner": {
@@ -77,28 +77,28 @@
         "roles": {
           "type": "nested",
           "properties": {
-            "DCTRoleLocalBurn": {
+            "DCDTRoleLocalBurn": {
               "type": "keyword"
             },
-            "DCTRoleLocalMint": {
+            "DCDTRoleLocalMint": {
               "type": "keyword"
             },
-            "DCTRoleNFTAddQuantity": {
+            "DCDTRoleNFTAddQuantity": {
               "type": "keyword"
             },
-            "DCTRoleNFTAddURI": {
+            "DCDTRoleNFTAddURI": {
               "type": "keyword"
             },
-            "DCTRoleNFTBurn": {
+            "DCDTRoleNFTBurn": {
               "type": "keyword"
             },
-            "DCTRoleNFTCreate": {
+            "DCDTRoleNFTCreate": {
               "type": "keyword"
             },
-            "DCTRoleNFTUpdateAttributes": {
+            "DCDTRoleNFTUpdateAttributes": {
               "type": "keyword"
             },
-            "DCTTransferRole": {
+            "DCDTTransferRole": {
               "type": "keyword"
             }
           }

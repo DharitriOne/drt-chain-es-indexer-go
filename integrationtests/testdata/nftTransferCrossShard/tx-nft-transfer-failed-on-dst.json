@@ -23,10 +23,10 @@
   "tokens": [
     "Something-abcdef-01"
   ],
-  "dctValues": [
+  "dcdtValues": [
     "1"
   ],
-  "dctValuesNum": [
+  "dcdtValuesNum": [
     1e-18
   ],
   "receivers": [
@@ -35,6 +35,6 @@
   "receiversShardIDs": [
     2
   ],
-  "operation": "DCTNFTTransfer",
+  "operation": "DCDTNFTTransfer",
   "errorEvent": true
 }

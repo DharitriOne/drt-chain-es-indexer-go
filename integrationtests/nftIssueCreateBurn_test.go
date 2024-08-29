@@ -11,7 +11,7 @@ import (
 
 	"github.com/DharitriOne/drt-chain-core-go/core"
 	dataBlock "github.com/DharitriOne/drt-chain-core-go/data/block"
-	"github.com/DharitriOne/drt-chain-core-go/data/dct"
+	"github.com/DharitriOne/drt-chain-core-go/data/dcdt"
 	"github.com/DharitriOne/drt-chain-core-go/data/outport"
 	"github.com/DharitriOne/drt-chain-core-go/data/transaction"
 	indexerdata "github.com/DharitriOne/drt-chain-es-indexer-go/process/dataindexer"
@@ -47,7 +47,7 @@ func TestIssueNFTCreateAndBurn(t *testing.T) {
 						{
 							Address:    decodeAddress(address1),
 							Identifier: []byte("issueNonFungible"),
-							Topics:     [][]byte{[]byte("NON-abcd"), []byte("NON-token"), []byte("NON"), []byte(core.NonFungibleDCT)},
+							Topics:     [][]byte{[]byte("NON-abcd"), []byte("NON-token"), []byte("NON"), []byte(core.NonFungibleDCDT)},
 						},
 						nil,
 					},
@@ -75,12 +75,12 @@ func TestIssueNFTCreateAndBurn(t *testing.T) {
 		ShardID:   0,
 	}
 
-	dctData := &dct.DCToken{
-		TokenMetaData: &dct.MetaData{
+	dcdtData := &dcdt.DCDigitalToken{
+		TokenMetaData: &dcdt.MetaData{
 			Creator: decodeAddress(address1),
 		},
 	}
-	dctDataBytes, _ := json.Marshal(dctData)
+	dcdtDataBytes, _ := json.Marshal(dcdtData)
 
 	pool = &outport.TransactionPool{
 		Logs: []*outport.LogData{
@@ -91,8 +91,8 @@ func TestIssueNFTCreateAndBurn(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(address1),
-							Identifier: []byte(core.BuiltInFunctionDCTNFTCreate),
-							Topics:     [][]byte{[]byte("NON-abcd"), big.NewInt(2).Bytes(), big.NewInt(1).Bytes(), dctDataBytes},
+							Identifier: []byte(core.BuiltInFunctionDCDTNFTCreate),
+							Topics:     [][]byte{[]byte("NON-abcd"), big.NewInt(2).Bytes(), big.NewInt(1).Bytes(), dcdtDataBytes},
 						},
 						nil,
 					},
@@ -127,7 +127,7 @@ func TestIssueNFTCreateAndBurn(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(address1),
-							Identifier: []byte(core.BuiltInFunctionDCTNFTBurn),
+							Identifier: []byte(core.BuiltInFunctionDCDTNFTBurn),
 							Topics:     [][]byte{[]byte("NON-abcd"), big.NewInt(2).Bytes(), big.NewInt(1).Bytes(), decodeAddress(address1)},
 						},
 						nil,

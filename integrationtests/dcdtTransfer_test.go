@@ -16,7 +16,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestDCTTransferTooMuchGasProvided(t *testing.T) {
+func TestDCDTTransferTooMuchGasProvided(t *testing.T) {
 	setLogLevelDebug()
 
 	esClient, err := createESClient(esURL)
@@ -25,13 +25,13 @@ func TestDCTTransferTooMuchGasProvided(t *testing.T) {
 	esProc, err := CreateElasticProcessor(esClient)
 	require.Nil(t, err)
 
-	txHash := []byte("dctTransfer")
+	txHash := []byte("dcdtTransfer")
 	header := &dataBlock.Header{
 		Round:     50,
 		TimeStamp: 5040,
 		ShardID:   0,
 	}
-	scrHash2 := []byte("scrHash2DCTTransfer")
+	scrHash2 := []byte("scrHash2DCDTTransfer")
 	body := &dataBlock.Body{
 		MiniBlocks: dataBlock.MiniBlockSlice{
 			{
@@ -51,17 +51,17 @@ func TestDCTTransferTooMuchGasProvided(t *testing.T) {
 
 	address1 := "moa1ef6470tjdtlgpa9f6g3ae4nsedmjg0gv6w73v32xtvhkfff993hqnvffr4"
 	address2 := "moa13u7zyekzvdvzek8768r5gau9p6677ufppsjuklu9e6t7yx7rhg4shll97f"
-	txDCT := &transaction.Transaction{
+	txDCDT := &transaction.Transaction{
 		Nonce:    6,
 		SndAddr:  decodeAddress(address1),
 		RcvAddr:  decodeAddress(address2),
 		GasLimit: 104011,
 		GasPrice: 1000000000,
-		Data:     []byte("DCTTransfer@54474e2d383862383366@0a"),
+		Data:     []byte("DCDTTransfer@54474e2d383862383366@0a"),
 		Value:    big.NewInt(0),
 	}
 
-	scrHash1 := []byte("scrHash1DCTTransfer")
+	scrHash1 := []byte("scrHash1DCDTTransfer")
 	scr1 := &smartContractResult.SmartContractResult{
 		Nonce:          7,
 		GasPrice:       1000000000,
@@ -85,7 +85,7 @@ func TestDCTTransferTooMuchGasProvided(t *testing.T) {
 
 	initialPaidFee, _ := big.NewInt(0).SetString("104000110000000", 10)
 	txInfo := &outport.TxInfo{
-		Transaction: txDCT,
+		Transaction: txDCDT,
 		FeeInfo: &outport.FeeInfo{
 			GasUsed:        104011,
 			Fee:            initialPaidFee,
@@ -111,5 +111,5 @@ func TestDCTTransferTooMuchGasProvided(t *testing.T) {
 	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.TransactionsIndex, true, genericResponse)
 	require.Nil(t, err)
 
-	require.JSONEq(t, readExpectedResult("./testdata/dctTransfer/dct-transfer.json"), string(genericResponse.Docs[0].Source))
+	require.JSONEq(t, readExpectedResult("./testdata/dcdtTransfer/dcdt-transfer.json"), string(genericResponse.Docs[0].Source))
 }

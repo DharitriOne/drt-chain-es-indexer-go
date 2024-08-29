@@ -8,6 +8,6 @@
     "nonEmptyURIs": false,
     "whiteListedStorage": false
   },
-  "type": "SemiFungibleDCT",
+  "type": "SemiFungibleDCDT",
   "numDecimals": 0
 }

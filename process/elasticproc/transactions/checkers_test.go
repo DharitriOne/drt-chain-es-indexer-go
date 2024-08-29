@@ -148,12 +148,12 @@ func TestIsCrossShardSourceMe(t *testing.T) {
 	require.False(t, isCrossShardOnSourceShard(tx2, 1))
 }
 
-func TestAreDCTValuesOK(t *testing.T) {
+func TestAreDCDTValuesOK(t *testing.T) {
 	t.Parallel()
 
 	values := []string{"10000", "1", "10"}
-	require.True(t, areDCTValuesOK(values))
+	require.True(t, areDCDTValuesOK(values))
 
 	values = []string{"10000", "1", "1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"}
-	require.False(t, areDCTValuesOK(values))
+	require.False(t, areDCDTValuesOK(values))
 }

@@ -14,14 +14,14 @@ import (
 	"github.com/DharitriOne/drt-chain-core-go/core"
 	"github.com/DharitriOne/drt-chain-core-go/data/alteredAccount"
 	dataBlock "github.com/DharitriOne/drt-chain-core-go/data/block"
-	"github.com/DharitriOne/drt-chain-core-go/data/dct"
+	"github.com/DharitriOne/drt-chain-core-go/data/dcdt"
 	"github.com/DharitriOne/drt-chain-core-go/data/outport"
 	"github.com/DharitriOne/drt-chain-core-go/data/transaction"
 	indexerdata "github.com/DharitriOne/drt-chain-es-indexer-go/process/dataindexer"
 	"github.com/stretchr/testify/require"
 )
 
-func TestIndexAccountDCTWithTokenType(t *testing.T) {
+func TestIndexAccountDCDTWithTokenType(t *testing.T) {
 	setLogLevelDebug()
 
 	esClient, err := createESClient(esURL)
@@ -49,7 +49,7 @@ func TestIndexAccountDCTWithTokenType(t *testing.T) {
 						{
 							Address:    decodeAddress(address),
 							Identifier: []byte("issueSemiFungible"),
-							Topics:     [][]byte{[]byte("SEMI-abcd"), []byte("SEMI-token"), []byte("SEM"), []byte(core.SemiFungibleDCT)},
+							Topics:     [][]byte{[]byte("SEMI-abcd"), []byte("SEMI-token"), []byte("SEM"), []byte(core.SemiFungibleDCDT)},
 						},
 						nil,
 					},
@@ -65,7 +65,7 @@ func TestIndexAccountDCTWithTokenType(t *testing.T) {
 	genericResponse := &GenericResponse{}
 	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.TokensIndex, true, genericResponse)
 	require.Nil(t, err)
-	require.JSONEq(t, readExpectedResult("./testdata/accountsDCTWithTokenType/token-after-issue.json"), string(genericResponse.Docs[0].Source))
+	require.JSONEq(t, readExpectedResult("./testdata/accountsDCDTWithTokenType/token-after-issue.json"), string(genericResponse.Docs[0].Source))
 
 	// ################ CREATE SEMI FUNGIBLE TOKEN ##########################
 	coreAlteredAccounts := map[string]*alteredAccount.AlteredAccount{
@@ -94,12 +94,12 @@ func TestIndexAccountDCTWithTokenType(t *testing.T) {
 		ShardID:   2,
 	}
 
-	dctData := &dct.DCToken{
-		TokenMetaData: &dct.MetaData{
+	dcdtData := &dcdt.DCDigitalToken{
+		TokenMetaData: &dcdt.MetaData{
 			Creator: []byte("creator"),
 		},
 	}
-	dctDataBytes, _ := json.Marshal(dctData)
+	dcdtDataBytes, _ := json.Marshal(dcdtData)
 
 	pool = &outport.TransactionPool{
 		Logs: []*outport.LogData{
@@ -110,8 +110,8 @@ func TestIndexAccountDCTWithTokenType(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(address),
-							Identifier: []byte(core.BuiltInFunctionDCTNFTCreate),
-							Topics:     [][]byte{[]byte("SEMI-abcd"), big.NewInt(2).Bytes(), big.NewInt(1).Bytes(), dctDataBytes},
+							Identifier: []byte(core.BuiltInFunctionDCDTNFTCreate),
+							Topics:     [][]byte{[]byte("SEMI-abcd"), big.NewInt(2).Bytes(), big.NewInt(1).Bytes(), dcdtDataBytes},
 						},
 						nil,
 					},
@@ -125,13 +125,13 @@ func TestIndexAccountDCTWithTokenType(t *testing.T) {
 
 	ids = []string{fmt.Sprintf("%s-SEMI-abcd-02", address)}
 	genericResponse = &GenericResponse{}
-	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCTIndex, true, genericResponse)
+	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCDTIndex, true, genericResponse)
 	require.Nil(t, err)
-	require.JSONEq(t, readExpectedResult("./testdata/accountsDCTWithTokenType/account-dct.json"), string(genericResponse.Docs[0].Source))
+	require.JSONEq(t, readExpectedResult("./testdata/accountsDCDTWithTokenType/account-dcdt.json"), string(genericResponse.Docs[0].Source))
 
 }
 
-func TestIndexAccountDCTWithTokenTypeShardFirstAndMetachainAfter(t *testing.T) {
+func TestIndexAccountDCDTWithTokenTypeShardFirstAndMetachainAfter(t *testing.T) {
 	setLogLevelDebug()
 
 	esClient, err := createESClient(esURL)
@@ -167,12 +167,12 @@ func TestIndexAccountDCTWithTokenTypeShardFirstAndMetachainAfter(t *testing.T) {
 		ShardID:   2,
 	}
 
-	dctData := &dct.DCToken{
-		TokenMetaData: &dct.MetaData{
+	dcdtData := &dcdt.DCDigitalToken{
+		TokenMetaData: &dcdt.MetaData{
 			Creator: decodeAddress(address),
 		},
 	}
-	dctDataBytes, _ := json.Marshal(dctData)
+	dcdtDataBytes, _ := json.Marshal(dcdtData)
 
 	pool := &outport.TransactionPool{
 		Logs: []*outport.LogData{
@@ -183,8 +183,8 @@ func TestIndexAccountDCTWithTokenTypeShardFirstAndMetachainAfter(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(address),
-							Identifier: []byte(core.BuiltInFunctionDCTNFTCreate),
-							Topics:     [][]byte{[]byte("TTTT-abcd"), big.NewInt(2).Bytes(), big.NewInt(1).Bytes(), dctDataBytes},
+							Identifier: []byte(core.BuiltInFunctionDCDTNFTCreate),
+							Topics:     [][]byte{[]byte("TTTT-abcd"), big.NewInt(2).Bytes(), big.NewInt(1).Bytes(), dcdtDataBytes},
 						},
 						nil,
 					},
@@ -198,9 +198,9 @@ func TestIndexAccountDCTWithTokenTypeShardFirstAndMetachainAfter(t *testing.T) {
 
 	ids := []string{fmt.Sprintf("%s-TTTT-abcd-02", address)}
 	genericResponse := &GenericResponse{}
-	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCTIndex, true, genericResponse)
+	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCDTIndex, true, genericResponse)
 	require.Nil(t, err)
-	require.JSONEq(t, readExpectedResult("./testdata/accountsDCTWithTokenType/account-dct-without-type.json"), string(genericResponse.Docs[0].Source))
+	require.JSONEq(t, readExpectedResult("./testdata/accountsDCDTWithTokenType/account-dcdt-without-type.json"), string(genericResponse.Docs[0].Source))
 
 	time.Sleep(time.Second)
 
@@ -224,7 +224,7 @@ func TestIndexAccountDCTWithTokenTypeShardFirstAndMetachainAfter(t *testing.T) {
 						{
 							Address:    decodeAddress(address),
 							Identifier: []byte("issueSemiFungible"),
-							Topics:     [][]byte{[]byte("TTTT-abcd"), []byte("TTTT-token"), []byte("SEM"), []byte(core.SemiFungibleDCT)},
+							Topics:     [][]byte{[]byte("TTTT-abcd"), []byte("TTTT-token"), []byte("SEM"), []byte(core.SemiFungibleDCDT)},
 						},
 						nil,
 					},
@@ -240,17 +240,17 @@ func TestIndexAccountDCTWithTokenTypeShardFirstAndMetachainAfter(t *testing.T) {
 	genericResponse = &GenericResponse{}
 	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.TokensIndex, true, genericResponse)
 	require.Nil(t, err)
-	require.JSONEq(t, readExpectedResult("./testdata/accountsDCTWithTokenType/semi-fungible-token.json"), string(genericResponse.Docs[0].Source))
+	require.JSONEq(t, readExpectedResult("./testdata/accountsDCDTWithTokenType/semi-fungible-token.json"), string(genericResponse.Docs[0].Source))
 
 	ids = []string{fmt.Sprintf("%s-TTTT-abcd-02", address)}
 	genericResponse = &GenericResponse{}
-	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCTIndex, true, genericResponse)
+	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCDTIndex, true, genericResponse)
 	require.Nil(t, err)
-	require.JSONEq(t, readExpectedResult("./testdata/accountsDCTWithTokenType/account-dct-with-type.json"), string(genericResponse.Docs[0].Source))
+	require.JSONEq(t, readExpectedResult("./testdata/accountsDCDTWithTokenType/account-dcdt-with-type.json"), string(genericResponse.Docs[0].Source))
 
 	ids = []string{"TTTT-abcd-02"}
 	genericResponse = &GenericResponse{}
 	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.TokensIndex, true, genericResponse)
 	require.Nil(t, err)
-	require.JSONEq(t, readExpectedResult("./testdata/accountsDCTWithTokenType/semi-fungible-token-after-create.json"), string(genericResponse.Docs[0].Source))
+	require.JSONEq(t, readExpectedResult("./testdata/accountsDCDTWithTokenType/semi-fungible-token-after-create.json"), string(genericResponse.Docs[0].Source))
 }

@@ -157,7 +157,7 @@ func (di *dataIndexer) RevertIndexedBlock(blockData *outport.BlockData) error {
 		return err
 	}
 
-	return di.elasticProcessor.RemoveAccountsDCT(header.GetTimeStamp(), header.GetShardID())
+	return di.elasticProcessor.RemoveAccountsDCDT(header.GetTimeStamp(), header.GetShardID())
 }
 
 // SaveRoundsInfo will save data about a slice of rounds in elasticsearch

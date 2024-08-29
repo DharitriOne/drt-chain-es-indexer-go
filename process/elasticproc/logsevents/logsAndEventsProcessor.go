@@ -72,16 +72,16 @@ func createEventsProcessors(args ArgsLogsAndEventsProcessor) []eventsProcessor {
 	scDeploysProc := newSCDeploysProcessor(args.PubKeyConverter)
 	informativeProc := newInformativeLogsProcessor()
 	updateNFTProc := newNFTsPropertiesProcessor(args.PubKeyConverter)
-	dctPropProc := newDctPropertiesProcessor(args.PubKeyConverter)
-	dctIssueProc := newDCTIssueProcessor(args.PubKeyConverter)
+	dcdtPropProc := newDcdtPropertiesProcessor(args.PubKeyConverter)
+	dcdtIssueProc := newDCDTIssueProcessor(args.PubKeyConverter)
 	delegatorsProcessor := newDelegatorsProcessor(args.PubKeyConverter, args.BalanceConverter)
 
 	eventsProcs := []eventsProcessor{
 		scDeploysProc,
 		informativeProc,
 		updateNFTProc,
-		dctPropProc,
-		dctIssueProc,
+		dcdtPropProc,
+		dcdtIssueProc,
 		delegatorsProcessor,
 		nftsProc,
 	}

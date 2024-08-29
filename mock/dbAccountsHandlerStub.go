@@ -12,7 +12,7 @@ type DBAccountsHandlerStub struct {
 }
 
 // GetAccounts -
-func (dba *DBAccountsHandlerStub) GetAccounts(_ map[string]*alteredAccount.AlteredAccount) ([]*data.Account, []*data.AccountDCT) {
+func (dba *DBAccountsHandlerStub) GetAccounts(_ map[string]*alteredAccount.AlteredAccount) ([]*data.Account, []*data.AccountDCDT) {
 	return nil, nil
 }
 
@@ -21,8 +21,8 @@ func (dba *DBAccountsHandlerStub) PrepareRegularAccountsMap(_ uint64, _ []*data.
 	return nil
 }
 
-// PrepareAccountsMapDCT -
-func (dba *DBAccountsHandlerStub) PrepareAccountsMapDCT(_ uint64, _ []*data.AccountDCT, _ data.CountTags, _ uint32) (map[string]*data.AccountInfo, data.TokensHandler) {
+// PrepareAccountsMapDCDT -
+func (dba *DBAccountsHandlerStub) PrepareAccountsMapDCDT(_ uint64, _ []*data.AccountDCDT, _ data.CountTags, _ uint32) (map[string]*data.AccountInfo, data.TokensHandler) {
 	return nil, nil
 }
 
@@ -48,8 +48,8 @@ func (dba *DBAccountsHandlerStub) SerializeAccounts(_ map[string]*data.AccountIn
 	return nil
 }
 
-// SerializeAccountsDCT -
-func (dba *DBAccountsHandlerStub) SerializeAccountsDCT(_ map[string]*data.AccountInfo, _ []*data.NFTDataUpdate, _ *data.BufferSlice, _ string) error {
+// SerializeAccountsDCDT -
+func (dba *DBAccountsHandlerStub) SerializeAccountsDCDT(_ map[string]*data.AccountInfo, _ []*data.NFTDataUpdate, _ *data.BufferSlice, _ string) error {
 	return nil
 }
 

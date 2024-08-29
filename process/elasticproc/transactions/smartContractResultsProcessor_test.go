@@ -84,7 +84,7 @@ func TestPrepareSmartContractResult(t *testing.T) {
 		Operation:          "transfer",
 		SenderAddressBytes: sndAddr,
 		Receivers:          []string{},
-		DCTValuesNum:       []float64{},
+		DCDTValuesNum:      []float64{},
 		InitialTxFee:       "0",
 	}
 

@@ -8,7 +8,7 @@ import (
 	"github.com/DharitriOne/drt-chain-core-go/core/sharding"
 	coreData "github.com/DharitriOne/drt-chain-core-go/data"
 	"github.com/DharitriOne/drt-chain-core-go/data/alteredAccount"
-	"github.com/DharitriOne/drt-chain-core-go/data/dct"
+	"github.com/DharitriOne/drt-chain-core-go/data/dcdt"
 	"github.com/DharitriOne/drt-chain-core-go/marshal"
 	"github.com/DharitriOne/drt-chain-es-indexer-go/data"
 	"github.com/DharitriOne/drt-chain-es-indexer-go/process/elasticproc/converters"
@@ -35,9 +35,9 @@ func newNFTsProcessor(
 		pubKeyConverter: pubKeyConverter,
 		marshalizer:     marshalizer,
 		nftOperationsIdentifiers: map[string]struct{}{
-			core.BuiltInFunctionDCTNFTBurn:   {},
-			core.BuiltInFunctionDCTNFTCreate: {},
-			core.BuiltInFunctionDCTWipe:      {},
+			core.BuiltInFunctionDCDTNFTBurn:   {},
+			core.BuiltInFunctionDCDTNFTCreate: {},
+			core.BuiltInFunctionDCDTWipe:      {},
 		},
 	}
 }
@@ -54,7 +54,7 @@ func (np *nftsProcessor) processEvent(args *argsProcessEvent) argOutputProcessEv
 	// [1] --> nonce of the NFT (bytes)
 	// [2] --> value
 	// [3] --> receiver NFT address in case of NFTTransfer
-	//     --> DCT token data in case of NFTCreate
+	//     --> DCDT token data in case of NFTCreate
 	topics := args.event.GetTopics()
 	nonceBig := big.NewInt(0).SetBytes(topics[1])
 	if nonceBig.Uint64() == 0 {
@@ -85,7 +85,7 @@ func (np *nftsProcessor) processEvent(args *argsProcessEvent) argOutputProcessEv
 		}
 	}
 
-	if eventIdentifier == core.BuiltInFunctionDCTWipe {
+	if eventIdentifier == core.BuiltInFunctionDCDTWipe {
 		args.tokensSupply.Add(&data.TokenInfo{
 			Token:      token,
 			Identifier: identifier,
@@ -101,8 +101,8 @@ func (np *nftsProcessor) processEvent(args *argsProcessEvent) argOutputProcessEv
 
 func (np *nftsProcessor) shouldAddReceiverData(args *argsProcessEvent) bool {
 	eventIdentifier := string(args.event.GetIdentifier())
-	isWrongIdentifier := eventIdentifier != core.BuiltInFunctionDCTNFTTransfer &&
-		eventIdentifier != core.BuiltInFunctionMultiDCTNFTTransfer && eventIdentifier != core.BuiltInFunctionDCTWipe
+	isWrongIdentifier := eventIdentifier != core.BuiltInFunctionDCDTNFTTransfer &&
+		eventIdentifier != core.BuiltInFunctionMultiDCDTNFTTransfer && eventIdentifier != core.BuiltInFunctionDCDTWipe
 
 	if isWrongIdentifier || len(args.event.GetTopics()) < numTopicsWithReceiverAddress {
 		return false
@@ -121,7 +121,7 @@ func (np *nftsProcessor) processNFTEventOnSender(
 	token := string(topics[0])
 	nonceBig := big.NewInt(0).SetBytes(topics[1])
 	eventIdentifier := string(event.GetIdentifier())
-	if eventIdentifier == core.BuiltInFunctionDCTNFTBurn || eventIdentifier == core.BuiltInFunctionDCTWipe {
+	if eventIdentifier == core.BuiltInFunctionDCDTNFTBurn || eventIdentifier == core.BuiltInFunctionDCDTWipe {
 		tokensSupply.Add(&data.TokenInfo{
 			Token:      token,
 			Identifier: converters.ComputeTokenIdentifier(token, nonceBig.Uint64()),
@@ -130,21 +130,21 @@ func (np *nftsProcessor) processNFTEventOnSender(
 		})
 	}
 
-	isNFTCreate := eventIdentifier == core.BuiltInFunctionDCTNFTCreate
+	isNFTCreate := eventIdentifier == core.BuiltInFunctionDCDTNFTCreate
 	shouldReturn := !isNFTCreate || len(topics) < numTopicsWithReceiverAddress
 	if shouldReturn {
 		return
 	}
 
-	dctTokenBytes := topics[3]
-	dctToken := &dct.DCToken{}
-	err := np.marshalizer.Unmarshal(dctToken, dctTokenBytes)
+	dcdtTokenBytes := topics[3]
+	dcdtToken := &dcdt.DCDigitalToken{}
+	err := np.marshalizer.Unmarshal(dcdtToken, dcdtTokenBytes)
 	if err != nil {
 		log.Warn("nftsProcessor.processNFTEventOnSender() cannot urmarshal", "error", err.Error())
 		return
 	}
 
-	tokenMetaData := converters.PrepareTokenMetaData(np.convertMetaData(dctToken.TokenMetaData))
+	tokenMetaData := converters.PrepareTokenMetaData(np.convertMetaData(dcdtToken.TokenMetaData))
 	tokensCreateInfo.Add(&data.TokenInfo{
 		Token:      token,
 		Identifier: converters.ComputeTokenIdentifier(token, nonceBig.Uint64()),
@@ -154,7 +154,7 @@ func (np *nftsProcessor) processNFTEventOnSender(
 	})
 }
 
-func (np *nftsProcessor) convertMetaData(metaData *dct.MetaData) *alteredAccount.TokenMetaData {
+func (np *nftsProcessor) convertMetaData(metaData *dcdt.MetaData) *alteredAccount.TokenMetaData {
 	if metaData == nil {
 		return nil
 	}

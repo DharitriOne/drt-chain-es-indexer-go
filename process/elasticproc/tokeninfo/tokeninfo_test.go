@@ -12,11 +12,11 @@ func TestTokenRolesAndPropertiesAddRole(t *testing.T) {
 
 	tokenRolesAndProp := NewTokenRolesAndProperties()
 
-	tokenRolesAndProp.AddRole("MY-abcd", "addr-1", core.DCTRoleNFTBurn, true)
-	tokenRolesAndProp.AddRole("MY-abcd", "addr-2", core.DCTRoleNFTBurn, true)
+	tokenRolesAndProp.AddRole("MY-abcd", "addr-1", core.DCDTRoleNFTBurn, true)
+	tokenRolesAndProp.AddRole("MY-abcd", "addr-2", core.DCDTRoleNFTBurn, true)
 
 	expected := map[string][]*RoleData{
-		core.DCTRoleNFTBurn: {
+		core.DCDTRoleNFTBurn: {
 			{
 				Token:   "MY-abcd",
 				Address: "addr-1",

@@ -23,11 +23,11 @@
   "tokens": [
     "TGN-88b83f"
   ],
-  "dctValues": [
+  "dcdtValues": [
     "10"
   ],
-  "dctValuesNum": [
+  "dcdtValuesNum": [
     1e-17
   ],
-  "operation": "DCTTransfer"
+  "operation": "DCDTTransfer"
 }

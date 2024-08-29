@@ -44,17 +44,17 @@ type AccountResponse struct {
 	Code  string `json:"code"`
 }
 
-// BalancesDCTResponse holds the account dct balances endpoint response
-type BalancesDCTResponse struct {
+// BalancesDCDTResponse holds the account dcdt balances endpoint response
+type BalancesDCDTResponse struct {
 	Data struct {
-		DCTS      map[string]*dctNFTTokenData `json:"dcts"`
-		TokenData *dctNFTTokenData            `json:"tokenData"`
+		DCDTS     map[string]*dcdtNFTTokenData `json:"dcdts"`
+		TokenData *dcdtNFTTokenData            `json:"tokenData"`
 	} `json:"data"`
 	Error string `json:"error"`
 	Code  string `json:"code"`
 }
 
-type dctNFTTokenData struct {
+type dcdtNFTTokenData struct {
 	TokenIdentifier string   `json:"tokenIdentifier"`
 	Balance         string   `json:"balance"`
 	Properties      string   `json:"properties,omitempty"`

@@ -49,7 +49,7 @@ func (bc *balanceChecker) fixWrongBalance(addr, identifier string, timestamp uin
 	}
 
 	balanceBig, _ := big.NewInt(0).SetString(balanceFromProxy, 10)
-	balanceFloat := bc.balanceToFloat.ComputeDCTBalanceAsFloat(balanceBig)
+	balanceFloat := bc.balanceToFloat.ComputeDCDTBalanceAsFloat(balanceBig)
 	if identifier == "" {
 		balanceFloat = bc.balanceToFloat.ComputeBalanceAsFloat(balanceBig)
 	}

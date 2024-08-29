@@ -68,7 +68,7 @@ func TestAccountBalanceNFTTransfer(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(addr),
-							Identifier: []byte(core.BuiltInFunctionDCTNFTCreate),
+							Identifier: []byte(core.BuiltInFunctionDCDTNFTCreate),
 							Topics:     [][]byte{[]byte("NFT-abcdef"), big.NewInt(7440483).Bytes(), big.NewInt(1).Bytes()},
 						},
 						nil,
@@ -96,7 +96,7 @@ func TestAccountBalanceNFTTransfer(t *testing.T) {
 
 	ids := []string{fmt.Sprintf("%s-NFT-abcdef-718863", addr)}
 	genericResponse := &GenericResponse{}
-	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCTIndex, true, genericResponse)
+	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCDTIndex, true, genericResponse)
 	require.Nil(t, err)
 	require.JSONEq(t, readExpectedResult("./testdata/accountsBalanceNftTransfer/balance-nft-after-create.json"), string(genericResponse.Docs[0].Source))
 
@@ -117,7 +117,7 @@ func TestAccountBalanceNFTTransfer(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    []byte("test-address-balance-1"),
-							Identifier: []byte(core.BuiltInFunctionDCTNFTTransfer),
+							Identifier: []byte(core.BuiltInFunctionDCDTNFTTransfer),
 							Topics:     [][]byte{[]byte("NFT-abcdef"), big.NewInt(7440483).Bytes(), big.NewInt(1).Bytes(), decodeAddress(addrReceiver)},
 						},
 						nil,
@@ -157,13 +157,13 @@ func TestAccountBalanceNFTTransfer(t *testing.T) {
 
 	ids = []string{fmt.Sprintf("%s-NFT-abcdef-718863", addr)}
 	genericResponse = &GenericResponse{}
-	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCTIndex, true, genericResponse)
+	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCDTIndex, true, genericResponse)
 	require.Nil(t, err)
 	require.False(t, genericResponse.Docs[0].Found)
 
 	ids = []string{fmt.Sprintf("%s-NFT-abcdef-718863", addrReceiver)}
 	genericResponse = &GenericResponse{}
-	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCTIndex, true, genericResponse)
+	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.AccountsDCDTIndex, true, genericResponse)
 	require.Nil(t, err)
 	require.JSONEq(t, readExpectedResult("./testdata/accountsBalanceNftTransfer/balance-nft-after-transfer.json"), string(genericResponse.Docs[0].Source))
 }

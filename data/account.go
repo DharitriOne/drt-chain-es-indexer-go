@@ -67,8 +67,8 @@ type Account struct {
 	IsSender    bool
 }
 
-// AccountDCT is a structure that is needed for DCT accounts
-type AccountDCT struct {
+// AccountDCDT is a structure that is needed for DCDT accounts
+type AccountDCDT struct {
 	Account         *alteredAccount.AlteredAccount
 	TokenIdentifier string
 	NFTNonce        uint64

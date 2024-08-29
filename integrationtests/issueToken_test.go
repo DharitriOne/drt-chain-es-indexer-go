@@ -44,7 +44,7 @@ func TestIssueTokenAndTransferOwnership(t *testing.T) {
 						{
 							Address:    decodeAddress(address1),
 							Identifier: []byte("issueSemiFungible"),
-							Topics:     [][]byte{[]byte("SSSS-abcd"), []byte("semi-token"), []byte("SSSS"), []byte(core.SemiFungibleDCT), big.NewInt(18).Bytes()},
+							Topics:     [][]byte{[]byte("SSSS-abcd"), []byte("semi-token"), []byte("SSSS"), []byte(core.SemiFungibleDCDT), big.NewInt(18).Bytes()},
 						},
 						nil,
 					},
@@ -62,7 +62,7 @@ func TestIssueTokenAndTransferOwnership(t *testing.T) {
 	require.Nil(t, err)
 	require.JSONEq(t, readExpectedResult("./testdata/issueToken/token-semi.json"), string(genericResponse.Docs[0].Source))
 
-	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.DCTsIndex, true, genericResponse)
+	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.DCDTsIndex, true, genericResponse)
 	require.Nil(t, err)
 	require.JSONEq(t, readExpectedResult("./testdata/issueToken/token-semi.json"), string(genericResponse.Docs[0].Source))
 
@@ -77,7 +77,7 @@ func TestIssueTokenAndTransferOwnership(t *testing.T) {
 						{
 							Address:    decodeAddress(address1),
 							Identifier: []byte("transferOwnership"),
-							Topics:     [][]byte{[]byte("SSSS-abcd"), []byte("semi-token"), []byte("SSSS"), []byte(core.SemiFungibleDCT), decodeAddress(address2)},
+							Topics:     [][]byte{[]byte("SSSS-abcd"), []byte("semi-token"), []byte("SSSS"), []byte(core.SemiFungibleDCDT), decodeAddress(address2)},
 						},
 						nil,
 					},
@@ -94,7 +94,7 @@ func TestIssueTokenAndTransferOwnership(t *testing.T) {
 	require.Nil(t, err)
 	require.JSONEq(t, readExpectedResult("./testdata/issueToken/token-semi-after-transfer-ownership.json"), string(genericResponse.Docs[0].Source))
 
-	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.DCTsIndex, true, genericResponse)
+	err = esClient.DoMultiGet(context.Background(), ids, indexerdata.DCDTsIndex, true, genericResponse)
 	require.Nil(t, err)
 	require.JSONEq(t, readExpectedResult("./testdata/issueToken/token-semi-after-transfer-ownership.json"), string(genericResponse.Docs[0].Source))
 
@@ -108,7 +108,7 @@ func TestIssueTokenAndTransferOwnership(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(address1),
-							Identifier: []byte("DCTPause"),
+							Identifier: []byte("DCDTPause"),
 							Topics:     [][]byte{[]byte("SSSS-abcd")},
 						},
 						nil,
@@ -136,7 +136,7 @@ func TestIssueTokenAndTransferOwnership(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(address1),
-							Identifier: []byte("DCTUnPause"),
+							Identifier: []byte("DCDTUnPause"),
 							Topics:     [][]byte{[]byte("SSSS-abcd")},
 						},
 						nil,

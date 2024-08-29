@@ -1,13 +1,14 @@
-package noKibana
+package withKibana
 
-// AccountsDCTHistory will hold the configuration for the accountsdcthistory index
-var AccountsDCTHistory = Object{
+// AccountsDCDTHistory will hold the configuration for the accountsdcdthistory index
+var AccountsDCDTHistory = Object{
 	"index_patterns": Array{
-		"accountsdcthistory-*",
+		"accountsdcdthistory-*",
 	},
 	"settings": Object{
 		"number_of_shards":   5,
 		"number_of_replicas": 0,
+		"opendistro.index_state_management.rollover_alias": "accountsdcdthistory",
 	},
 	"mappings": Object{
 		"properties": Object{

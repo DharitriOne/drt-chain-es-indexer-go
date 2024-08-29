@@ -143,15 +143,15 @@ func (proc *smartContractResultsProcessor) prepareSmartContractResult(
 			"value", scr.Value, "hash", scrHashHex, "error", err)
 	}
 
-	dctValuesNum, err := proc.balanceConverter.ComputeSliceOfStringsAsFloat(res.DCTValues)
+	dcdtValuesNum, err := proc.balanceConverter.ComputeSliceOfStringsAsFloat(res.DCDTValues)
 	if err != nil {
-		log.Warn("smartContractResultsProcessor.prepareSmartContractResult cannot compute scr dct values as num",
-			"dct values", res.DCTValues, "hash", scrHashHex, "error", err)
+		log.Warn("smartContractResultsProcessor.prepareSmartContractResult cannot compute scr dcdt values as num",
+			"dcdt values", res.DCDTValues, "hash", scrHashHex, "error", err)
 	}
 
-	var dctValues []string
-	if areDCTValuesOK(res.DCTValues) {
-		dctValues = res.DCTValues
+	var dcdtValues []string
+	if areDCDTValuesOK(res.DCDTValues) {
+		dcdtValues = res.DCDTValues
 	}
 
 	feeInfo := getFeeInfo(scrInfo)
@@ -180,8 +180,8 @@ func (proc *smartContractResultsProcessor) prepareSmartContractResult(
 		ReceiverShard:      receiverShard,
 		Operation:          res.Operation,
 		Function:           converters.TruncateFieldIfExceedsMaxLength(res.Function),
-		DCTValues:          dctValues,
-		DCTValuesNum:       dctValuesNum,
+		DCDTValues:         dcdtValues,
+		DCDTValuesNum:      dcdtValuesNum,
 		Tokens:             converters.TruncateSliceElementsIfExceedsMaxLength(res.Tokens),
 		Receivers:          receiversAddr,
 		ReceiversShardIDs:  res.ReceiversShardID,

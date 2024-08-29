@@ -13,25 +13,25 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestDctPropertiesProcCreateRoleShouldWork(t *testing.T) {
+func TestDcdtPropertiesProcCreateRoleShouldWork(t *testing.T) {
 	t.Parallel()
 
-	dctPropProc := newDctPropertiesProcessor(&mock.PubkeyConverterMock{})
+	dcdtPropProc := newDcdtPropertiesProcessor(&mock.PubkeyConverterMock{})
 
 	event := &transaction.Event{
 		Address:    []byte("addr"),
-		Identifier: []byte(core.BuiltInFunctionSetDCTRole),
-		Topics:     [][]byte{[]byte("MYTOKEN-abcd"), big.NewInt(0).Bytes(), big.NewInt(0).Bytes(), []byte(core.DCTRoleNFTCreate)},
+		Identifier: []byte(core.BuiltInFunctionSetDCDTRole),
+		Topics:     [][]byte{[]byte("MYTOKEN-abcd"), big.NewInt(0).Bytes(), big.NewInt(0).Bytes(), []byte(core.DCDTRoleNFTCreate)},
 	}
 
 	tokenRolesAndProperties := tokeninfo.NewTokenRolesAndProperties()
-	dctPropProc.processEvent(&argsProcessEvent{
+	dcdtPropProc.processEvent(&argsProcessEvent{
 		event:                   event,
 		tokenRolesAndProperties: tokenRolesAndProperties,
 	})
 
 	expected := map[string][]*tokeninfo.RoleData{
-		core.DCTRoleNFTCreate: {
+		core.DCDTRoleNFTCreate: {
 			{
 				Token:   "MYTOKEN-abcd",
 				Set:     true,
@@ -42,25 +42,25 @@ func TestDctPropertiesProcCreateRoleShouldWork(t *testing.T) {
 	require.Equal(t, expected, tokenRolesAndProperties.GetRoles())
 }
 
-func TestDctPropertiesProcTransferCreateRole(t *testing.T) {
+func TestDcdtPropertiesProcTransferCreateRole(t *testing.T) {
 	t.Parallel()
 
-	dctPropProc := newDctPropertiesProcessor(&mock.PubkeyConverterMock{})
+	dcdtPropProc := newDcdtPropertiesProcessor(&mock.PubkeyConverterMock{})
 
 	event := &transaction.Event{
 		Address:    []byte("addr"),
-		Identifier: []byte(core.BuiltInFunctionDCTNFTCreateRoleTransfer),
+		Identifier: []byte(core.BuiltInFunctionDCDTNFTCreateRoleTransfer),
 		Topics:     [][]byte{[]byte("MYTOKEN-abcd"), big.NewInt(0).Bytes(), big.NewInt(0).Bytes(), []byte(strconv.FormatBool(true))},
 	}
 
 	tokenRolesAndProperties := tokeninfo.NewTokenRolesAndProperties()
-	dctPropProc.processEvent(&argsProcessEvent{
+	dcdtPropProc.processEvent(&argsProcessEvent{
 		event:                   event,
 		tokenRolesAndProperties: tokenRolesAndProperties,
 	})
 
 	expected := map[string][]*tokeninfo.RoleData{
-		core.DCTRoleNFTCreate: {
+		core.DCDTRoleNFTCreate: {
 			{
 				Token:   "MYTOKEN-abcd",
 				Set:     true,
@@ -71,10 +71,10 @@ func TestDctPropertiesProcTransferCreateRole(t *testing.T) {
 	require.Equal(t, expected, tokenRolesAndProperties.GetRoles())
 }
 
-func TestDctPropertiesProcUpgradeProperties(t *testing.T) {
+func TestDcdtPropertiesProcUpgradeProperties(t *testing.T) {
 	t.Parallel()
 
-	dctPropProc := newDctPropertiesProcessor(&mock.PubkeyConverterMock{})
+	dcdtPropProc := newDcdtPropertiesProcessor(&mock.PubkeyConverterMock{})
 
 	event := &transaction.Event{
 		Address:    []byte("addr"),
@@ -83,7 +83,7 @@ func TestDctPropertiesProcUpgradeProperties(t *testing.T) {
 	}
 
 	tokenRolesAndProperties := tokeninfo.NewTokenRolesAndProperties()
-	dctPropProc.processEvent(&argsProcessEvent{
+	dcdtPropProc.processEvent(&argsProcessEvent{
 		event:                   event,
 		tokenRolesAndProperties: tokenRolesAndProperties,
 	})
@@ -108,7 +108,7 @@ func TestCheckRolesBytes(t *testing.T) {
 	rolesBytes := [][]byte{role1, role2}
 	require.False(t, checkRolesBytes(rolesBytes))
 
-	role1 = []byte("DCTRoleNFTCreate")
+	role1 = []byte("DCDTRoleNFTCreate")
 	rolesBytes = [][]byte{role1}
 	require.True(t, checkRolesBytes(rolesBytes))
 }

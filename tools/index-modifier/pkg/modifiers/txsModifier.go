@@ -156,7 +156,7 @@ func (tm *txsModifier) prepareTxForIndexing(tx *data.Transaction) error {
 
 	tx.Operation = res.Operation
 	tx.Function = res.Function
-	tx.DCTValues = res.DCTValues
+	tx.DCDTValues = res.DCDTValues
 	tx.Tokens = res.Tokens
 	tx.ReceiversShardIDs = res.ReceiversShardID
 

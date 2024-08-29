@@ -4,7 +4,7 @@
   "token": "SEMI-abcd",
   "issuer": "moa1sqy2ywvswp09ef7qwjhv8zwr9kzz3xas6y2ye5nuryaz0wcnfzzs7cfj8p",
   "currentOwner": "moa1sqy2ywvswp09ef7qwjhv8zwr9kzz3xas6y2ye5nuryaz0wcnfzzs7cfj8p",
-  "type": "SemiFungibleDCT",
+  "type": "SemiFungibleDCDT",
   "timestamp": 5040,
   "ownersHistory": [
     {

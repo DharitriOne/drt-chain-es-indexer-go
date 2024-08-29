@@ -19,7 +19,7 @@ func TestSerializeNFTCreateInfo(t *testing.T) {
 			Data: &data.TokenMetaData{
 				Creator: "010102",
 			},
-			Type: core.NonFungibleDCT,
+			Type: core.NonFungibleDCDT,
 		},
 	}
 
@@ -29,7 +29,7 @@ func TestSerializeNFTCreateInfo(t *testing.T) {
 	require.Equal(t, 1, len(buffSlice.Buffers()))
 
 	expectedRes := `{ "index" : { "_index":"tokens", "_id" : "my-token-001-0f" } }
-{"identifier":"my-token-001-0f","token":"my-token-0001","numDecimals":0,"type":"NonFungibleDCT","data":{"creator":"010102","nonEmptyURIs":false,"whiteListedStorage":false}}
+{"identifier":"my-token-001-0f","token":"my-token-0001","numDecimals":0,"type":"NonFungibleDCDT","data":{"creator":"010102","nonEmptyURIs":false,"whiteListedStorage":false}}
 `
 	require.Equal(t, expectedRes, buffSlice.Buffers()[0].String())
 }
@@ -59,7 +59,7 @@ func TestSerializeAccounts(t *testing.T) {
 	require.Equal(t, expectedRes, buffSlice.Buffers()[0].String())
 }
 
-func TestSerializeAccountsDCTNonceZero(t *testing.T) {
+func TestSerializeAccountsDCDTNonceZero(t *testing.T) {
 	t.Parallel()
 
 	accs := map[string]*data.AccountInfo{
@@ -76,17 +76,17 @@ func TestSerializeAccountsDCTNonceZero(t *testing.T) {
 	}
 
 	buffSlice := data.NewBufferSlice(data.DefaultMaxBulkSize)
-	err := (&accountsProcessor{}).SerializeAccountsDCT(accs, nil, buffSlice, "accountsdct")
+	err := (&accountsProcessor{}).SerializeAccountsDCDT(accs, nil, buffSlice, "accountsdcdt")
 	require.NoError(t, err)
 	require.Equal(t, 1, len(buffSlice.Buffers()))
 
-	expectedRes := `{ "update" : {"_index": "accountsdct", "_id" : "addr1-token-abcd-00" } }
+	expectedRes := `{ "update" : {"_index": "accountsdcdt", "_id" : "addr1-token-abcd-00" } }
 {"scripted_upsert": true, "script": {"source": "if ('create' == ctx.op) {ctx._source = params.account} else {if ((!ctx._source.containsKey('timestamp')) || (ctx._source.timestamp <= params.account.timestamp) ) {params.account.forEach((key, value) -> {ctx._source[key] = value;});}}","lang": "painless","params": { "account": {"address":"addr1","nonce":1,"balance":"10000000000000","balanceNum":1,"token":"token-abcd","properties":"000","timestamp":123,"shardID":0} }},"upsert": {}}
 `
 	require.Equal(t, expectedRes, buffSlice.Buffers()[0].String())
 }
 
-func TestSerializeAccountsDCT(t *testing.T) {
+func TestSerializeAccountsDCDT(t *testing.T) {
 	t.Parallel()
 
 	accs := map[string]*data.AccountInfo{
@@ -102,11 +102,11 @@ func TestSerializeAccountsDCT(t *testing.T) {
 	}
 
 	buffSlice := data.NewBufferSlice(data.DefaultMaxBulkSize)
-	err := (&accountsProcessor{}).SerializeAccountsDCT(accs, nil, buffSlice, "accountsdct")
+	err := (&accountsProcessor{}).SerializeAccountsDCDT(accs, nil, buffSlice, "accountsdcdt")
 	require.NoError(t, err)
 	require.Equal(t, 1, len(buffSlice.Buffers()))
 
-	expectedRes := `{ "update" : {"_index": "accountsdct", "_id" : "addr1-token-0001-05" } }
+	expectedRes := `{ "update" : {"_index": "accountsdcdt", "_id" : "addr1-token-0001-05" } }
 {"scripted_upsert": true, "script": {"source": "if ('create' == ctx.op) {ctx._source = params.account} else {if ((!ctx._source.containsKey('timestamp')) || (ctx._source.timestamp <= params.account.timestamp) ) {params.account.forEach((key, value) -> {ctx._source[key] = value;});}}","lang": "painless","params": { "account": {"address":"addr1","nonce":1,"balance":"10000000000000","balanceNum":1,"token":"token-0001","tokenNonce":5,"properties":"000","shardID":0} }},"upsert": {}}
 `
 	require.Equal(t, expectedRes, buffSlice.Buffers()[0].String())
@@ -142,17 +142,17 @@ func TestSerializeAccountsNFTWithMedaData(t *testing.T) {
 	}
 
 	buffSlice := data.NewBufferSlice(data.DefaultMaxBulkSize)
-	err := (&accountsProcessor{}).SerializeAccountsDCT(accs, nil, buffSlice, "accountsdct")
+	err := (&accountsProcessor{}).SerializeAccountsDCDT(accs, nil, buffSlice, "accountsdcdt")
 	require.NoError(t, err)
 	require.Equal(t, 1, len(buffSlice.Buffers()))
 
-	expectedRes := `{ "update" : {"_index": "accountsdct", "_id" : "addr1-token-0001-16" } }
+	expectedRes := `{ "update" : {"_index": "accountsdcdt", "_id" : "addr1-token-0001-16" } }
 {"scripted_upsert": true, "script": {"source": "if ('create' == ctx.op) {ctx._source = params.account} else {if ((!ctx._source.containsKey('timestamp')) || (ctx._source.timestamp <= params.account.timestamp) ) {params.account.forEach((key, value) -> {ctx._source[key] = value;});}}","lang": "painless","params": { "account": {"address":"addr1","nonce":1,"balance":"10000000000000","balanceNum":1,"token":"token-0001","identifier":"token-0001-5","tokenNonce":22,"properties":"000","data":{"name":"nft","creator":"010101","royalties":1,"hash":"aGFzaA==","uris":["dXJp"],"tags":["test","free","fun"],"attributes":"dGFnczp0ZXN0LGZyZWUsZnVuO2Rlc2NyaXB0aW9uOlRoaXMgaXMgYSB0ZXN0IGRlc2NyaXB0aW9uIGZvciBhbiBhd2Vzb21lIG5mdA==","metadata":"metadata-test","nonEmptyURIs":true,"whiteListedStorage":false},"shardID":0} }},"upsert": {}}
 `
 	require.Equal(t, expectedRes, buffSlice.Buffers()[0].String())
 }
 
-func TestSerializeAccountsDCTDelete(t *testing.T) {
+func TestSerializeAccountsDCDTDelete(t *testing.T) {
 	t.Parallel()
 
 	accs := map[string]*data.AccountInfo{
@@ -167,11 +167,11 @@ func TestSerializeAccountsDCTDelete(t *testing.T) {
 	}
 
 	buffSlice := data.NewBufferSlice(data.DefaultMaxBulkSize)
-	err := (&accountsProcessor{}).SerializeAccountsDCT(accs, nil, buffSlice, "accountsdct")
+	err := (&accountsProcessor{}).SerializeAccountsDCDT(accs, nil, buffSlice, "accountsdcdt")
 	require.NoError(t, err)
 	require.Equal(t, 1, len(buffSlice.Buffers()))
 
-	expectedRes := `{ "update" : {"_index":"accountsdct", "_id" : "addr1-token-0001-00" } }
+	expectedRes := `{ "update" : {"_index":"accountsdcdt", "_id" : "addr1-token-0001-00" } }
 {"scripted_upsert": true, "script": {"source": "if ('create' == ctx.op) {ctx.op = 'noop'} else {if (ctx._source.containsKey('timestamp')) {if (ctx._source.timestamp <= params.timestamp) {ctx.op = 'delete'}} else {ctx.op = 'delete'}}","lang": "painless","params": {"timestamp": 0}},"upsert": {}}
 `
 	require.Equal(t, expectedRes, buffSlice.Buffers()[0].String())

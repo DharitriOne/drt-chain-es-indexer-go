@@ -14,24 +14,24 @@ import (
 
 const (
 	maxDocumentsFromES = 9999
-	accountsdctIndex   = "accountsdct"
+	accountsdcdtIndex  = "accountsdcdt"
 	operationsIndex    = "operations"
 
-	allTokensEndpoint   = "/address/%s/dct"
-	specificDCTEndpoint = allTokensEndpoint + "/%s"
-	specificNFTEndpoint = "/address/%s/nft/%s/nonce/%d"
+	allTokensEndpoint    = "/address/%s/dcdt"
+	specificDCDTEndpoint = allTokensEndpoint + "/%s"
+	specificNFTEndpoint  = "/address/%s/nft/%s/nonce/%d"
 )
 
 var countTotalCompared uint64 = 0
 
-// CheckDCTBalances will compare all the DCT balances from the Elasticsearch with the results from gateway
-func (bc *balanceChecker) CheckDCTBalances() error {
+// CheckDCDTBalances will compare all the DCDT balances from the Elasticsearch with the results from gateway
+func (bc *balanceChecker) CheckDCDTBalances() error {
 	balancesFromEs, err := bc.getAccountsByQuery(matchAllQuery)
 	if err != nil {
 		return err
 	}
 
-	log.Info("total accounts with DCT tokens ", "count", len(balancesFromEs))
+	log.Info("total accounts with DCDT tokens ", "count", len(balancesFromEs))
 
 	maxGoroutines := bc.maxNumberOfParallelRequests
 	done, wg := make(chan struct{}, maxGoroutines), &sync.WaitGroup{}
@@ -85,7 +85,7 @@ func (bc *balanceChecker) compareBalancesFromES(addr string, tokenBalanceMap map
 func (bc *balanceChecker) getFromESAndCompare(address string, balancesFromProxy map[string]string, numBalancesFromEs int) error {
 	log.Info("second compare", "address", address, "total compared till now", atomic.LoadUint64(&countTotalCompared))
 
-	balancesES, err := bc.getDCTBalancesFromES(address, numBalancesFromEs)
+	balancesES, err := bc.getDCDTBalancesFromES(address, numBalancesFromEs)
 	if err != nil {
 		return err
 	}
@@ -95,21 +95,21 @@ func (bc *balanceChecker) getFromESAndCompare(address string, balancesFromProxy 
 	return nil
 }
 
-func (bc *balanceChecker) getDCTBalancesFromES(address string, numOfBalances int) (balancesDCT, error) {
+func (bc *balanceChecker) getDCDTBalancesFromES(address string, numOfBalances int) (balancesDCDT, error) {
 	encoded, _ := encodeQuery(getBalancesByAddress(address))
 
 	if numOfBalances > maxDocumentsFromES {
-		log.Info("bc.getDCTBalancesFromES", "number of balances", numOfBalances, "address", address)
+		log.Info("bc.getDCDTBalancesFromES", "number of balances", numOfBalances, "address", address)
 		return bc.getAccountsByQuery(encoded.String())
 	}
 
 	accountsResponse := &ResponseAccounts{}
-	err := bc.esClient.DoGetRequest(&encoded, accountsdctIndex, accountsResponse, maxDocumentsFromES)
+	err := bc.esClient.DoGetRequest(&encoded, accountsdcdtIndex, accountsResponse, maxDocumentsFromES)
 	if err != nil {
 		return nil, err
 	}
 
-	balancesES := newBalancesDCT()
+	balancesES := newBalancesDCDT()
 	balancesES.extractBalancesFromResponse(accountsResponse)
 
 	return balancesES, nil
@@ -136,7 +136,7 @@ func (bc *balanceChecker) compareBalances(balancesFromES, balancesFromProxy map[
 				"data", timestampString,
 				"id", id)
 
-			err := bc.deleteExtraBalance(address, tokenIdentifier, uint64(timestampLast), accountsdctIndex)
+			err := bc.deleteExtraBalance(address, tokenIdentifier, uint64(timestampLast), accountsdcdtIndex)
 			if err != nil {
 				log.Warn("cannot remove balance from es",
 					"addr", address, "identifier", tokenIdentifier, "error", err)
@@ -155,7 +155,7 @@ func (bc *balanceChecker) compareBalances(balancesFromES, balancesFromProxy map[
 			timestampLast, id := bc.getLasTimeWhenBalanceWasChanged(tokenIdentifier, address)
 			timestampString := formatTimestamp(int64(timestampLast))
 
-			err := bc.fixWrongBalance(address, tokenIdentifier, uint64(timestampLast), balanceProxy, accountsdctIndex)
+			err := bc.fixWrongBalance(address, tokenIdentifier, uint64(timestampLast), balanceProxy, accountsdcdtIndex)
 			if err != nil {
 				log.Warn("cannot update balance from es", "addr", address, "identifier", tokenIdentifier)
 			}
@@ -210,7 +210,7 @@ func (bc *balanceChecker) getLasTimeWhenBalanceWasChanged(identifier, address st
 }
 
 func (bc *balanceChecker) getBalancesFromProxy(address string) (map[string]string, error) {
-	responseBalancesProxy := &BalancesDCTResponse{}
+	responseBalancesProxy := &BalancesDCDTResponse{}
 	err := bc.restClient.CallGetRestEndPoint(fmt.Sprintf(allTokensEndpoint, address), responseBalancesProxy)
 	if err != nil {
 		return nil, err
@@ -220,19 +220,19 @@ func (bc *balanceChecker) getBalancesFromProxy(address string) (map[string]strin
 	}
 
 	balances := make(map[string]string)
-	for tokenIdentifier, tokenData := range responseBalancesProxy.Data.DCTS {
+	for tokenIdentifier, tokenData := range responseBalancesProxy.Data.DCDTS {
 		balances[tokenIdentifier] = tokenData.Balance
 	}
 
 	return balances, nil
 }
 
-func (bc *balanceChecker) getAccountsByQuery(query string) (balancesDCT, error) {
-	defer utils.LogExecutionTime(log, time.Now(), "get all accounts with DCT tokens from ES")
+func (bc *balanceChecker) getAccountsByQuery(query string) (balancesDCDT, error) {
+	defer utils.LogExecutionTime(log, time.Now(), "get all accounts with DCDT tokens from ES")
 
-	balances := newBalancesDCT()
+	balances := newBalancesDCDT()
 
-	countAccountsDCT := 0
+	countAccountsDCDT := 0
 	handlerFunc := func(responseBytes []byte) error {
 		accountsRes := &ResponseAccounts{}
 		err := json.Unmarshal(responseBytes, accountsRes)
@@ -242,14 +242,14 @@ func (bc *balanceChecker) getAccountsByQuery(query string) (balancesDCT, error) 
 
 		balances.extractBalancesFromResponse(accountsRes)
 
-		countAccountsDCT++
-		log.Info("read accounts balance from es", "count", countAccountsDCT)
+		countAccountsDCDT++
+		log.Info("read accounts balance from es", "count", countAccountsDCDT)
 
 		return nil
 	}
 
 	err := bc.esClient.DoScrollRequestAllDocuments(
-		accountsdctIndex,
+		accountsdcdtIndex,
 		[]byte(query),
 		handlerFunc,
 	)
@@ -260,7 +260,7 @@ func (bc *balanceChecker) getAccountsByQuery(query string) (balancesDCT, error) 
 	return balances, nil
 }
 
-func (bc *balanceChecker) handlerFuncScrollAccountDCT(responseBytes []byte) error {
+func (bc *balanceChecker) handlerFuncScrollAccountDCDT(responseBytes []byte) error {
 	accountsRes := &ResponseAccounts{}
 	err := json.Unmarshal(responseBytes, accountsRes)
 	if err != nil {

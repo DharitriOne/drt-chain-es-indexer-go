@@ -31,15 +31,15 @@ type DatabaseClientHandler interface {
 
 // DBAccountHandler defines the actions that an accounts' handler should do
 type DBAccountHandler interface {
-	GetAccounts(coreAlteredAccounts map[string]*alteredAccount.AlteredAccount) ([]*data.Account, []*data.AccountDCT)
+	GetAccounts(coreAlteredAccounts map[string]*alteredAccount.AlteredAccount) ([]*data.Account, []*data.AccountDCDT)
 	PrepareRegularAccountsMap(timestamp uint64, accounts []*data.Account, shardID uint32) map[string]*data.AccountInfo
-	PrepareAccountsMapDCT(timestamp uint64, accounts []*data.AccountDCT, tagsCount data.CountTags, shardID uint32) (map[string]*data.AccountInfo, data.TokensHandler)
+	PrepareAccountsMapDCDT(timestamp uint64, accounts []*data.AccountDCDT, tagsCount data.CountTags, shardID uint32) (map[string]*data.AccountInfo, data.TokensHandler)
 	PrepareAccountsHistory(timestamp uint64, accounts map[string]*data.AccountInfo, shardID uint32) map[string]*data.AccountBalanceHistory
 	PutTokenMedataDataInTokens(tokensData []*data.TokenInfo, coreAlteredAccounts map[string]*alteredAccount.AlteredAccount)
 
 	SerializeAccountsHistory(accounts map[string]*data.AccountBalanceHistory, buffSlice *data.BufferSlice, index string) error
 	SerializeAccounts(accounts map[string]*data.AccountInfo, buffSlice *data.BufferSlice, index string) error
-	SerializeAccountsDCT(accounts map[string]*data.AccountInfo, updateNFTData []*data.NFTDataUpdate, buffSlice *data.BufferSlice, index string) error
+	SerializeAccountsDCDT(accounts map[string]*data.AccountInfo, updateNFTData []*data.NFTDataUpdate, buffSlice *data.BufferSlice, index string) error
 	SerializeNFTCreateInfo(tokensInfo []*data.TokenInfo, buffSlice *data.BufferSlice, index string) error
 	SerializeTypeForProvidedIDs(ids []string, tokenType string, buffSlice *data.BufferSlice, index string) error
 }

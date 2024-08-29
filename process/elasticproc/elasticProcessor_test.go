@@ -583,8 +583,8 @@ func TestElasticProcessor_IndexAlteredAccounts(t *testing.T) {
 		},
 	}
 	elasticSearchProc := newElasticsearchProcessor(dbWriter, arguments)
-	elasticSearchProc.enabledIndexes[dataindexer.AccountsDCTIndex] = struct{}{}
-	elasticSearchProc.enabledIndexes[dataindexer.AccountsDCTHistoryIndex] = struct{}{}
+	elasticSearchProc.enabledIndexes[dataindexer.AccountsDCDTIndex] = struct{}{}
+	elasticSearchProc.enabledIndexes[dataindexer.AccountsDCDTHistoryIndex] = struct{}{}
 
 	buffSlice := data.NewBufferSlice(data.DefaultMaxBulkSize)
 	tagsCount := tags.NewTagsCount()

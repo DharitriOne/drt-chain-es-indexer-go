@@ -1,9 +1,9 @@
 package withKibana
 
-// DCTs will hold the configuration for the dcts index
-var DCTs = Object{
+// DCDTs will hold the configuration for the dcdts index
+var DCDTs = Object{
 	"index_patterns": Array{
-		"dcts-*",
+		"dcdts-*",
 	},
 	"settings": Object{
 		"number_of_shards":   3,
@@ -99,28 +99,28 @@ var DCTs = Object{
 			"roles": Object{
 				"type": "nested",
 				"properties": Object{
-					"DCTRoleLocalBurn": Object{
+					"DCDTRoleLocalBurn": Object{
 						"type": "keyword",
 					},
-					"DCTRoleLocalMint": Object{
+					"DCDTRoleLocalMint": Object{
 						"type": "keyword",
 					},
-					"DCTRoleNFTAddQuantity": Object{
+					"DCDTRoleNFTAddQuantity": Object{
 						"type": "keyword",
 					},
-					"DCTRoleNFTAddURI": Object{
+					"DCDTRoleNFTAddURI": Object{
 						"type": "keyword",
 					},
-					"DCTRoleNFTBurn": Object{
+					"DCDTRoleNFTBurn": Object{
 						"type": "keyword",
 					},
-					"DCTRoleNFTCreate": Object{
+					"DCDTRoleNFTCreate": Object{
 						"type": "keyword",
 					},
-					"DCTRoleNFTUpdateAttributes": Object{
+					"DCDTRoleNFTUpdateAttributes": Object{
 						"type": "keyword",
 					},
-					"DCTTransferRole": Object{
+					"DCDTTransferRole": Object{
 						"type": "keyword",
 					},
 				},

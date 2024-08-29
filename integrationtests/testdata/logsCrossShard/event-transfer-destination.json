@@ -1,9 +1,9 @@
 {
   "logAddress": "moa1ju8pkvg57cwdmjsjx58jlmnuf4l9yspstrhr9tgsrt98n9edpm2qx8wte4",
-  "identifier": "DCTTransfer",
+  "identifier": "DCDTTransfer",
   "address": "moa1ju8pkvg57cwdmjsjx58jlmnuf4l9yspstrhr9tgsrt98n9edpm2qx8wte4",
   "topics": [
-    "455344542d61626364",
+    "444344542d61626364",
     "",
     "01"
   ],

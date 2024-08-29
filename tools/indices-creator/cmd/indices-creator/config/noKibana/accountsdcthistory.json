@@ -1,6 +1,6 @@
 {
 	"index_patterns": [
-		"accountsdcthistory-*"
+		"accountsdcdthistory-*"
 	],
 	"mappings": {
 		"properties": {

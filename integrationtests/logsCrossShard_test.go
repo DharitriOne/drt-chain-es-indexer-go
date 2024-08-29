@@ -47,8 +47,8 @@ func TestIndexLogSourceShardAndAfterDestinationAndAgainSource(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(address1),
-							Identifier: []byte(core.BuiltInFunctionDCTTransfer),
-							Topics:     [][]byte{[]byte("DCT-abcd"), big.NewInt(0).Bytes(), big.NewInt(1).Bytes()},
+							Identifier: []byte(core.BuiltInFunctionDCDTTransfer),
+							Topics:     [][]byte{[]byte("DCDT-abcd"), big.NewInt(0).Bytes(), big.NewInt(1).Bytes()},
 						},
 						nil,
 					},
@@ -92,8 +92,8 @@ func TestIndexLogSourceShardAndAfterDestinationAndAgainSource(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(address1),
-							Identifier: []byte(core.BuiltInFunctionDCTTransfer),
-							Topics:     [][]byte{[]byte("DCT-abcd"), big.NewInt(0).Bytes(), big.NewInt(1).Bytes()},
+							Identifier: []byte(core.BuiltInFunctionDCDTTransfer),
+							Topics:     [][]byte{[]byte("DCDT-abcd"), big.NewInt(0).Bytes(), big.NewInt(1).Bytes()},
 						},
 						{
 
@@ -145,8 +145,8 @@ func TestIndexLogSourceShardAndAfterDestinationAndAgainSource(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(address1),
-							Identifier: []byte(core.BuiltInFunctionDCTTransfer),
-							Topics:     [][]byte{[]byte("DCT-abcd"), big.NewInt(0).Bytes(), big.NewInt(1).Bytes()},
+							Identifier: []byte(core.BuiltInFunctionDCDTTransfer),
+							Topics:     [][]byte{[]byte("DCDT-abcd"), big.NewInt(0).Bytes(), big.NewInt(1).Bytes()},
 						},
 						nil,
 					},

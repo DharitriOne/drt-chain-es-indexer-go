@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	numDecimalsInFloatBalance    = 10
-	numDecimalsInFloatBalanceDCT = 18
+	numDecimalsInFloatBalance     = 10
+	numDecimalsInFloatBalanceDCDT = 18
 )
 
 var (
@@ -25,7 +25,7 @@ var zero = big.NewInt(0)
 type balanceConverter struct {
 	dividerForDenomination float64
 	balancePrecision       float64
-	balancePrecisionDCT    float64
+	balancePrecisionDCDT   float64
 }
 
 // NewBalanceConverter will create a new instance of balance converter
@@ -36,7 +36,7 @@ func NewBalanceConverter(denomination int) (*balanceConverter, error) {
 
 	return &balanceConverter{
 		balancePrecision:       math.Pow(10, float64(numDecimalsInFloatBalance)),
-		balancePrecisionDCT:    math.Pow(10, float64(numDecimalsInFloatBalanceDCT)),
+		balancePrecisionDCDT:   math.Pow(10, float64(numDecimalsInFloatBalanceDCDT)),
 		dividerForDenomination: math.Pow(10, float64(denomination)),
 	}, nil
 }
@@ -48,7 +48,7 @@ func (bc *balanceConverter) ComputeBalanceAsFloat(balance *big.Int) (float64, er
 
 // ConvertBigValueToFloat will convert big value to float
 func (bc *balanceConverter) ConvertBigValueToFloat(balance *big.Int) (float64, error) {
-	return bc.computeBalanceAsFloat(balance, bc.balancePrecisionDCT)
+	return bc.computeBalanceAsFloat(balance, bc.balancePrecisionDCDT)
 }
 
 // ComputeSliceOfStringsAsFloat will compute the provided slice of string values in float values
@@ -76,7 +76,7 @@ func (bc *balanceConverter) computeBalanceAsFloat(balance *big.Int, balancePreci
 	if balance == nil || balance.Cmp(zero) == 0 {
 		return 0, nil
 	}
-	if len(balance.Bytes()) > data.MaxDCTValueLength {
+	if len(balance.Bytes()) > data.MaxDCDTValueLength {
 		return 0, errValueTooBig
 	}
 

@@ -23,10 +23,10 @@
   "tokens": [
     "LKFARM-3f4f9b-016534"
   ],
-  "dctValues": [
+  "dcdtValues": [
     "2049781565634260759982"
   ],
-  "dctValuesNum": [
+  "dcdtValuesNum": [
     2049.781565634261
   ],
   "receivers": [
@@ -35,6 +35,6 @@
   "receiversShardIDs": [
     1
   ],
-  "operation": "DCTNFTTransfer",
+  "operation": "DCDTNFTTransfer",
   "function": "compoundRewardsProxy"
 }

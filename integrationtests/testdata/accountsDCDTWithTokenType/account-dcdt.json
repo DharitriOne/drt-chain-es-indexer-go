@@ -12,7 +12,7 @@
 		"whiteListedStorage": false
 	},
 	"timestamp": 5600,
-	"type": "SemiFungibleDCT",
+	"type": "SemiFungibleDCDT",
 	"currentOwner":"moa1sqy2ywvswp09ef7qwjhv8zwr9kzz3xas6y2ye5nuryaz0wcnfzzs7cfj8p",
 	"shardID": 2
 }

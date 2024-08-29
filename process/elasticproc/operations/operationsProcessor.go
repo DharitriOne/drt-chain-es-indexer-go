@@ -77,7 +77,7 @@ func setCanBeIgnoredField(scr *data.ScResult) {
 		return
 	}
 
-	isNFTTransferOrMultiTransfer := core.BuiltInFunctionDCTNFTTransfer == scr.Operation || core.BuiltInFunctionMultiDCTNFTTransfer == scr.Operation
+	isNFTTransferOrMultiTransfer := core.BuiltInFunctionDCDTNFTTransfer == scr.Operation || core.BuiltInFunctionMultiDCDTNFTTransfer == scr.Operation
 	isSCAddr := core.IsSmartContractAddress(scr.SenderAddressBytes)
 	if isNFTTransferOrMultiTransfer && !isSCAddr {
 		scr.CanBeIgnored = true

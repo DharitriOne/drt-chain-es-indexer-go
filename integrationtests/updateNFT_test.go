@@ -12,7 +12,7 @@ import (
 
 	"github.com/DharitriOne/drt-chain-core-go/core"
 	dataBlock "github.com/DharitriOne/drt-chain-core-go/data/block"
-	"github.com/DharitriOne/drt-chain-core-go/data/dct"
+	"github.com/DharitriOne/drt-chain-core-go/data/dcdt"
 	"github.com/DharitriOne/drt-chain-core-go/data/outport"
 	"github.com/DharitriOne/drt-chain-core-go/data/transaction"
 	indexerdata "github.com/DharitriOne/drt-chain-es-indexer-go/process/dataindexer"
@@ -26,12 +26,12 @@ func TestNFTUpdateMetadata(t *testing.T) {
 	require.Nil(t, err)
 
 	bigUri := bytes.Repeat([]byte("a"), 50000)
-	dctCreateData := &dct.DCToken{
-		TokenMetaData: &dct.MetaData{
+	dcdtCreateData := &dcdt.DCDigitalToken{
+		TokenMetaData: &dcdt.MetaData{
 			URIs: [][]byte{[]byte("uri"), []byte("uri"), bigUri, bigUri, bigUri},
 		},
 	}
-	marshalizedCreate, _ := json.Marshal(dctCreateData)
+	marshalizedCreate, _ := json.Marshal(dcdtCreateData)
 
 	esProc, err := CreateElasticProcessor(esClient)
 	require.Nil(t, err)
@@ -53,7 +53,7 @@ func TestNFTUpdateMetadata(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(address),
-							Identifier: []byte(core.BuiltInFunctionDCTNFTCreate),
+							Identifier: []byte(core.BuiltInFunctionDCDTNFTCreate),
 							Topics:     [][]byte{[]byte("NFT-abcd"), big.NewInt(14).Bytes(), big.NewInt(1).Bytes(), marshalizedCreate},
 						},
 						nil,
@@ -80,7 +80,7 @@ func TestNFTUpdateMetadata(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(address),
-							Identifier: []byte(core.BuiltInFunctionDCTNFTAddURI),
+							Identifier: []byte(core.BuiltInFunctionDCDTNFTAddURI),
 							Topics:     [][]byte{[]byte("NFT-abcd"), big.NewInt(14).Bytes(), big.NewInt(0).Bytes(), []byte("uri"), bigUri},
 						},
 						nil,
@@ -101,7 +101,7 @@ func TestNFTUpdateMetadata(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(address),
-							Identifier: []byte(core.BuiltInFunctionDCTNFTAddURI),
+							Identifier: []byte(core.BuiltInFunctionDCDTNFTAddURI),
 							Topics:     [][]byte{[]byte("NFT-abcd"), big.NewInt(14).Bytes(), big.NewInt(0).Bytes(), []byte("uri"), bigUri},
 						},
 						nil,
@@ -128,7 +128,7 @@ func TestNFTUpdateMetadata(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(address),
-							Identifier: []byte(core.BuiltInFunctionDCTNFTUpdateAttributes),
+							Identifier: []byte(core.BuiltInFunctionDCDTNFTUpdateAttributes),
 							Topics:     [][]byte{[]byte("NFT-abcd"), big.NewInt(14).Bytes(), big.NewInt(0).Bytes(), []byte("tags:test,free,fun;description:This is a test description for an awesome nft;metadata:metadata-test")},
 						},
 						nil,
@@ -156,7 +156,7 @@ func TestNFTUpdateMetadata(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(address),
-							Identifier: []byte(core.BuiltInFunctionDCTNFTUpdateAttributes),
+							Identifier: []byte(core.BuiltInFunctionDCDTNFTUpdateAttributes),
 							Topics:     [][]byte{[]byte("NFT-abcd"), big.NewInt(14).Bytes(), big.NewInt(0).Bytes(), []byte("something")},
 						},
 						nil,
@@ -183,7 +183,7 @@ func TestNFTUpdateMetadata(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(address),
-							Identifier: []byte(core.BuiltInFunctionDCTFreeze),
+							Identifier: []byte(core.BuiltInFunctionDCDTFreeze),
 							Topics:     [][]byte{[]byte("NFT-abcd"), big.NewInt(14).Bytes(), big.NewInt(0).Bytes(), []byte("something")},
 						},
 						nil,
@@ -209,7 +209,7 @@ func TestNFTUpdateMetadata(t *testing.T) {
 					Events: []*transaction.Event{
 						{
 							Address:    decodeAddress(address),
-							Identifier: []byte(core.BuiltInFunctionDCTUnFreeze),
+							Identifier: []byte(core.BuiltInFunctionDCDTUnFreeze),
 							Topics:     [][]byte{[]byte("NFT-abcd"), big.NewInt(14).Bytes(), big.NewInt(0).Bytes(), []byte("something")},
 						},
 						nil,

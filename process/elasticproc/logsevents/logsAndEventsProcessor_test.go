@@ -79,7 +79,7 @@ func TestLogsAndEventsProcessor_ExtractDataFromLogsAndPutInAltered(t *testing.T)
 				Events: []*transaction.Event{
 					{
 						Address:    []byte("addr"),
-						Identifier: []byte(core.BuiltInFunctionDCTNFTTransfer),
+						Identifier: []byte(core.BuiltInFunctionDCDTNFTTransfer),
 						Topics:     [][]byte{[]byte("my-token"), big.NewInt(0).SetUint64(1).Bytes(), big.NewInt(100).Bytes(), []byte("receiver")},
 					},
 				},
@@ -91,8 +91,8 @@ func TestLogsAndEventsProcessor_ExtractDataFromLogsAndPutInAltered(t *testing.T)
 				Events: []*transaction.Event{
 					{
 						Address:    []byte("addr"),
-						Identifier: []byte(core.BuiltInFunctionDCTTransfer),
-						Topics:     [][]byte{[]byte("dct"), big.NewInt(0).Bytes(), big.NewInt(0).SetUint64(100).Bytes(), []byte("receiver")},
+						Identifier: []byte(core.BuiltInFunctionDCDTTransfer),
+						Topics:     [][]byte{[]byte("dcdt"), big.NewInt(0).Bytes(), big.NewInt(0).SetUint64(100).Bytes(), []byte("receiver")},
 					},
 					nil,
 				},
@@ -104,8 +104,8 @@ func TestLogsAndEventsProcessor_ExtractDataFromLogsAndPutInAltered(t *testing.T)
 				Events: []*transaction.Event{
 					{
 						Address:    []byte("addr"),
-						Identifier: []byte(issueSemiFungibleDCTFunc),
-						Topics:     [][]byte{[]byte("SEMI-abcd"), []byte("semi-token"), []byte("SEMI"), []byte(core.SemiFungibleDCT)},
+						Identifier: []byte(issueSemiFungibleDCDTFunc),
+						Topics:     [][]byte{[]byte("SEMI-abcd"), []byte("semi-token"), []byte("SEMI"), []byte(core.SemiFungibleDCDT)},
 					},
 					nil,
 				},
@@ -176,7 +176,7 @@ func TestLogsAndEventsProcessor_ExtractDataFromLogsAndPutInAltered(t *testing.T)
 		Name:         "semi-token",
 		Ticker:       "SEMI",
 		Token:        "SEMI-abcd",
-		Type:         core.SemiFungibleDCT,
+		Type:         core.SemiFungibleDCDT,
 		Timestamp:    1000,
 		Issuer:       "61646472",
 		CurrentOwner: "61646472",
@@ -217,7 +217,7 @@ func TestLogsAndEventsProcessor_PrepareLogsForDB(t *testing.T) {
 				Events: []*transaction.Event{
 					{
 						Address:        []byte("addr"),
-						Identifier:     []byte(core.BuiltInFunctionDCTNFTTransfer),
+						Identifier:     []byte(core.BuiltInFunctionDCDTNFTTransfer),
 						Topics:         [][]byte{[]byte("my-token"), big.NewInt(0).SetUint64(1).Bytes(), []byte("receiver")},
 						AdditionalData: [][]byte{[]byte("something")},
 					},
@@ -245,7 +245,7 @@ func TestLogsAndEventsProcessor_PrepareLogsForDB(t *testing.T) {
 		Events: []*data.Event{
 			{
 				Address:        "61646472",
-				Identifier:     core.BuiltInFunctionDCTNFTTransfer,
+				Identifier:     core.BuiltInFunctionDCDTNFTTransfer,
 				Topics:         [][]byte{[]byte("my-token"), big.NewInt(0).SetUint64(1).Bytes(), []byte("receiver")},
 				AdditionalData: [][]byte{[]byte("something")},
 			},
@@ -264,7 +264,7 @@ func TestLogsAndEventsProcessor_ExtractDataFromLogsNFTBurn(t *testing.T) {
 			Events: []*transaction.Event{
 				{
 					Address:    []byte("addr"),
-					Identifier: []byte(core.BuiltInFunctionDCTNFTBurn),
+					Identifier: []byte(core.BuiltInFunctionDCDTNFTBurn),
 					Topics:     [][]byte{[]byte("MY-NFT"), big.NewInt(2).Bytes(), big.NewInt(1).Bytes()},
 				},
 			},
@@ -309,7 +309,7 @@ func TestPrepareLogsAndEvents_LogEvents(t *testing.T) {
 				Events: []*transaction.Event{
 					{
 						Address:        []byte("addr"),
-						Identifier:     []byte(core.BuiltInFunctionDCTNFTTransfer),
+						Identifier:     []byte(core.BuiltInFunctionDCDTNFTTransfer),
 						Topics:         [][]byte{[]byte("my-token"), big.NewInt(0).SetUint64(1).Bytes(), []byte("receiver")},
 						AdditionalData: [][]byte{[]byte("something")},
 					},
@@ -338,12 +338,12 @@ func TestPrepareLogsAndEvents_LogEvents(t *testing.T) {
 	_, eventsDB := proc.PrepareLogsForDB(logsAndEvents, 1234, 1)
 	require.Equal(t, []*data.LogEvent{
 		{
-			ID:             "19a6e20648cf534801b9b0f23a505ad1ea34bd583ee3881abe26b711b3feb281",
+			ID:             "d2621767eafd69bc468d9127680873e8e4d7829e37a4c8e9ba8fe05f7d41e951",
 			TxHash:         "747848617368",
 			OriginalTxHash: "originalHash",
 			LogAddress:     "61646472657373",
 			Address:        "61646472",
-			Identifier:     "DCTNFTTransfer",
+			Identifier:     "DCDTNFTTransfer",
 			AdditionalData: []string{"736f6d657468696e67"},
 			Topics:         []string{"6d792d746f6b656e", "01", "7265636569766572"},
 			Order:          0,

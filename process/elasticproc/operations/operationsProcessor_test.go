@@ -66,7 +66,7 @@ func TestOperationsProcessor_ShouldIgnoreSCRs(t *testing.T) {
 			Data: []byte("@6f6b"),
 		},
 		{
-			Operation:          "DCTNFTTransfer",
+			Operation:          "DCDTNFTTransfer",
 			SenderAddressBytes: []byte("sender"),
 		},
 	}

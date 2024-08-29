@@ -8,10 +8,10 @@
   "fee": "235850000000000",
   "feeNum": 0.00023585,
   "initialPaidFee": "276215000000000",
-  "dctValues": [
+  "dcdtValues": [
     "1"
   ],
-  "dctValuesNum": [
+  "dcdtValuesNum": [
     1e-18
   ],
   "nonce": 79,
@@ -31,7 +31,7 @@
   ],
   "value": "0",
   "valueNum": 0,
-  "operation": "DCTNFTTransfer",
+  "operation": "DCDTNFTTransfer",
   "gasPrice": 1000000000,
   "timestamp": 5040,
   "status": "success",

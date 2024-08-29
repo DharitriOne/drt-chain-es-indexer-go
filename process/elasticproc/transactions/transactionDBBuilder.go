@@ -70,15 +70,15 @@ func (dtb *dbTransactionBuilder) prepareTransaction(
 		log.Warn("dbTransactionBuilder.prepareTransaction: cannot compute transaction fee as num", "fee", feeInfo.Fee,
 			"hash", txHash, "error", err)
 	}
-	dctValuesNum, err := dtb.balanceConverter.ComputeSliceOfStringsAsFloat(res.DCTValues)
+	dcdtValuesNum, err := dtb.balanceConverter.ComputeSliceOfStringsAsFloat(res.DCDTValues)
 	if err != nil {
-		log.Warn("dbTransactionBuilder.prepareTransaction: cannot compute dct values as num",
-			"dct values", res.DCTValues, "hash", txHash, "error", err)
+		log.Warn("dbTransactionBuilder.prepareTransaction: cannot compute dcdt values as num",
+			"dcdt values", res.DCDTValues, "hash", txHash, "error", err)
 	}
 
-	var dctValues []string
-	if areDCTValuesOK(res.DCTValues) {
-		dctValues = res.DCTValues
+	var dcdtValues []string
+	if areDCDTValuesOK(res.DCDTValues) {
+		dcdtValues = res.DCDTValues
 	}
 	guardianAddress := ""
 	if len(tx.GuardianAddr) > 0 {
@@ -113,8 +113,8 @@ func (dtb *dbTransactionBuilder) prepareTransaction(
 		IsScCall:          isScCall,
 		Operation:         res.Operation,
 		Function:          converters.TruncateFieldIfExceedsMaxLength(res.Function),
-		DCTValues:         dctValues,
-		DCTValuesNum:      dctValuesNum,
+		DCDTValues:        dcdtValues,
+		DCDTValuesNum:     dcdtValuesNum,
 		Tokens:            converters.TruncateSliceElementsIfExceedsMaxLength(res.Tokens),
 		Receivers:         receiversAddr,
 		ReceiversShardIDs: res.ReceiversShardID,

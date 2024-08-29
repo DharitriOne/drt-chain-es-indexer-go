@@ -168,7 +168,7 @@ func prepareSerializedDataForATransaction(
 	}
 
 	if isNFTTransferOrMultiTransfer(tx) {
-		serializedData, errPrep := prepareNFTDCTTransferOrMultiDCTTransfer(marshaledTx)
+		serializedData, errPrep := prepareNFTDCDTTransferOrMultiDCDTTransfer(marshaledTx)
 		if errPrep != nil {
 			return nil, nil, err
 		}
@@ -182,7 +182,7 @@ func prepareSerializedDataForATransaction(
 	return meta, marshaledTx, nil
 }
 
-func prepareNFTDCTTransferOrMultiDCTTransfer(marshaledTx []byte) ([]byte, error) {
+func prepareNFTDCDTTransferOrMultiDCDTTransfer(marshaledTx []byte) ([]byte, error) {
 	codeToExecute := `
 		if ('create' == ctx.op) {
 			ctx._source = params.tx;
@@ -219,5 +219,5 @@ func isNFTTransferOrMultiTransfer(tx *data.Transaction) bool {
 		return false
 	}
 
-	return splitData[0] == core.BuiltInFunctionDCTNFTTransfer || splitData[0] == core.BuiltInFunctionMultiDCTNFTTransfer
+	return splitData[0] == core.BuiltInFunctionDCDTNFTTransfer || splitData[0] == core.BuiltInFunctionMultiDCDTNFTTransfer
 }

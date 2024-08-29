@@ -92,7 +92,7 @@ func TestGetMoveBalanceTransaction(t *testing.T) {
 		FeeNum:           1e-16,
 		ReceiverUserName: []byte("rcv"),
 		SenderUserName:   []byte("snd"),
-		DCTValuesNum:     []float64{},
+		DCDTValuesNum:    []float64{},
 		Operation:        "transfer",
 		Version:          1,
 		Receivers:        []string{},
@@ -185,7 +185,7 @@ func TestGetMoveBalanceTransactionInvalid(t *testing.T) {
 		Operation:        "transfer",
 		Version:          1,
 		Receivers:        []string{},
-		DCTValuesNum:     []float64{},
+		DCDTValuesNum:    []float64{},
 	}
 
 	txInfo := &outport.TxInfo{

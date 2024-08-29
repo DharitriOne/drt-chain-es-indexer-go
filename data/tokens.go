@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-const metaDCT = "MetaDCT"
+const metaDCDT = "MetaDCDT"
 
 // NFTDataUpdate will contain the update information for an NFT or SFT
 type NFTDataUpdate struct {
@@ -80,10 +80,10 @@ type TokensHandler interface {
 	Add(tokenInfo *TokenInfo)
 	Len() int
 	AddTypeAndOwnerFromResponse(res *ResponseTokens)
-	PutTypeAndOwnerInAccountsDCT(accountsDCT map[string]*AccountInfo)
+	PutTypeAndOwnerInAccountsDCDT(accountsDCDT map[string]*AccountInfo)
 	GetAllTokens() []string
 	GetAll() []*TokenInfo
-	GetAllWithoutMetaDCT() []*TokenInfo
+	GetAllWithoutMetaDCDT() []*TokenInfo
 	IsInterfaceNil() bool
 }
 
@@ -118,11 +118,11 @@ func (ti *tokensInfo) GetAll() []*TokenInfo {
 	return tokens
 }
 
-// GetAllWithoutMetaDCT will return all tokens except metaDCT tokens
-func (ti *tokensInfo) GetAllWithoutMetaDCT() []*TokenInfo {
+// GetAllWithoutMetaDCDT will return all tokens except metaDCDT tokens
+func (ti *tokensInfo) GetAllWithoutMetaDCDT() []*TokenInfo {
 	tokens := make([]*TokenInfo, 0)
 	for _, tokenData := range ti.tokensInfo {
-		if tokenData.Type == metaDCT {
+		if tokenData.Type == metaDCDT {
 			continue
 		}
 
@@ -175,16 +175,16 @@ func (ti *tokensInfo) AddTypeAndOwnerFromResponse(res *ResponseTokens) {
 	}
 }
 
-// PutTypeAndOwnerInAccountsDCT will put in the provided accounts DCT map token type and current owner
-func (ti *tokensInfo) PutTypeAndOwnerInAccountsDCT(accountsDCT map[string]*AccountInfo) {
-	for _, accountDCT := range accountsDCT {
-		tokenData, ok := ti.tokensInfo[accountDCT.TokenIdentifier]
+// PutTypeAndOwnerInAccountsDCDT will put in the provided accounts DCDT map token type and current owner
+func (ti *tokensInfo) PutTypeAndOwnerInAccountsDCDT(accountsDCDT map[string]*AccountInfo) {
+	for _, accountDCDT := range accountsDCDT {
+		tokenData, ok := ti.tokensInfo[accountDCDT.TokenIdentifier]
 		if !ok {
 			continue
 		}
 
-		accountDCT.Type = tokenData.Type
-		accountDCT.CurrentOwner = tokenData.CurrentOwner
+		accountDCDT.Type = tokenData.Type
+		accountDCDT.CurrentOwner = tokenData.CurrentOwner
 	}
 }
 

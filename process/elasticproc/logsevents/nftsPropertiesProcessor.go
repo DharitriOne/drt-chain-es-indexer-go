@@ -19,12 +19,12 @@ func newNFTsPropertiesProcessor(pubKeyConverter core.PubkeyConverter) *nftsPrope
 	return &nftsPropertiesProc{
 		pubKeyConverter: pubKeyConverter,
 		propertiesChangeOperations: map[string]struct{}{
-			core.BuiltInFunctionDCTNFTAddURI:           {},
-			core.BuiltInFunctionDCTNFTUpdateAttributes: {},
-			core.BuiltInFunctionDCTFreeze:              {},
-			core.BuiltInFunctionDCTUnFreeze:            {},
-			core.BuiltInFunctionDCTPause:               {},
-			core.BuiltInFunctionDCTUnPause:             {},
+			core.BuiltInFunctionDCDTNFTAddURI:           {},
+			core.BuiltInFunctionDCDTNFTUpdateAttributes: {},
+			core.BuiltInFunctionDCDTFreeze:              {},
+			core.BuiltInFunctionDCDTUnFreeze:            {},
+			core.BuiltInFunctionDCDTPause:               {},
+			core.BuiltInFunctionDCDTUnPause:             {},
 		},
 	}
 }
@@ -82,13 +82,13 @@ func (npp *nftsPropertiesProc) processEvent(args *argsProcessEvent) argOutputPro
 	}
 
 	switch eventIdentifier {
-	case core.BuiltInFunctionDCTNFTUpdateAttributes:
+	case core.BuiltInFunctionDCDTNFTUpdateAttributes:
 		updateNFT.NewAttributes = topics[3]
-	case core.BuiltInFunctionDCTNFTAddURI:
+	case core.BuiltInFunctionDCDTNFTAddURI:
 		updateNFT.URIsToAdd = topics[3:]
-	case core.BuiltInFunctionDCTFreeze:
+	case core.BuiltInFunctionDCDTFreeze:
 		updateNFT.Freeze = true
-	case core.BuiltInFunctionDCTUnFreeze:
+	case core.BuiltInFunctionDCDTUnFreeze:
 		updateNFT.UnFreeze = true
 	}
 
@@ -102,12 +102,12 @@ func (npp *nftsPropertiesProc) processPauseAndUnPauseEvent(eventIdentifier strin
 	var updateNFT *data.NFTDataUpdate
 
 	switch eventIdentifier {
-	case core.BuiltInFunctionDCTPause:
+	case core.BuiltInFunctionDCDTPause:
 		updateNFT = &data.NFTDataUpdate{
 			Identifier: token,
 			Pause:      true,
 		}
-	case core.BuiltInFunctionDCTUnPause:
+	case core.BuiltInFunctionDCDTUnPause:
 		updateNFT = &data.NFTDataUpdate{
 			Identifier: token,
 			UnPause:    true,

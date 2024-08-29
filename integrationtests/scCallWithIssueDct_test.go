@@ -18,7 +18,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestScCallIntraShardWithIssueDCT(t *testing.T) {
+func TestScCallIntraShardWithIssueDCDT(t *testing.T) {
 	setLogLevelDebug()
 
 	esClient, err := createESClient(esURL)
@@ -62,11 +62,11 @@ func TestScCallIntraShardWithIssueDCT(t *testing.T) {
 		Value:    big.NewInt(50000000000000000),
 	}
 
-	dctSystemSC := "moa1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzllls29jpxv"
-	scrWithIssueDCT := &smartContractResult.SmartContractResult{
+	dcdtSystemSC := "moa1qqqqqqqqqqqqqqqpqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzllls29jpxv"
+	scrWithIssueDCDT := &smartContractResult.SmartContractResult{
 		Nonce:          0,
 		SndAddr:        decodeAddress(contractAddress),
-		RcvAddr:        decodeAddress(dctSystemSC),
+		RcvAddr:        decodeAddress(dcdtSystemSC),
 		OriginalTxHash: txHash,
 		PrevTxHash:     txHash,
 		Data:           []byte("issueNonFungible@4d79546573744e667464@544553544e4654@63616e467265657a65@74727565@63616e57697065@74727565@63616e5061757365@74727565@63616e4368616e67654f776e6572@66616c7365@63616e55706772616465@66616c7365@63616e4164645370656369616c526f6c6573@74727565@58f638"),
@@ -82,7 +82,7 @@ func TestScCallIntraShardWithIssueDCT(t *testing.T) {
 		},
 	}
 
-	scrInfoWithIssue := &outport.SCRInfo{SmartContractResult: scrWithIssueDCT, FeeInfo: &outport.FeeInfo{}}
+	scrInfoWithIssue := &outport.SCRInfo{SmartContractResult: scrWithIssueDCDT, FeeInfo: &outport.FeeInfo{}}
 	pool := &outport.TransactionPool{
 		Transactions: map[string]*outport.TxInfo{
 			hex.EncodeToString(txHash): txInfo,
@@ -106,7 +106,7 @@ func TestScCallIntraShardWithIssueDCT(t *testing.T) {
 	require.Nil(t, err)
 
 	require.JSONEq(t,
-		readExpectedResult("./testdata/scCallWithIssueDct/tx-after-execution-on-source-shard.json"),
+		readExpectedResult("./testdata/scCallWithIssueDcdt/tx-after-execution-on-source-shard.json"),
 		string(genericResponse.Docs[0].Source),
 	)
 
@@ -115,7 +115,7 @@ func TestScCallIntraShardWithIssueDCT(t *testing.T) {
 	require.Nil(t, err)
 
 	require.JSONEq(t,
-		readExpectedResult("./testdata/scCallWithIssueDct/scr-with-issue-executed-on-source-shard.json"),
+		readExpectedResult("./testdata/scCallWithIssueDcdt/scr-with-issue-executed-on-source-shard.json"),
 		string(genericResponse.Docs[0].Source),
 	)
 
@@ -145,7 +145,7 @@ func TestScCallIntraShardWithIssueDCT(t *testing.T) {
 	scrWithCallBack := &smartContractResult.SmartContractResult{
 		Nonce:          0,
 		Value:          big.NewInt(0),
-		SndAddr:        decodeAddress(dctSystemSC),
+		SndAddr:        decodeAddress(dcdtSystemSC),
 		RcvAddr:        decodeAddress(contractAddress),
 		Data:           []byte("@00@544553544e46542d643964353463"),
 		OriginalTxHash: txHash,
@@ -168,11 +168,11 @@ func TestScCallIntraShardWithIssueDCT(t *testing.T) {
 	require.Nil(t, err)
 
 	require.JSONEq(t,
-		readExpectedResult("./testdata/scCallWithIssueDct/scr-with-issue-executed-on-destination-shard.json"),
+		readExpectedResult("./testdata/scCallWithIssueDcdt/scr-with-issue-executed-on-destination-shard.json"),
 		string(genericResponse.Docs[0].Source),
 	)
 	require.JSONEq(t,
-		readExpectedResult("./testdata/scCallWithIssueDct/scr-with-callback-executed-on-source.json"),
+		readExpectedResult("./testdata/scCallWithIssueDcdt/scr-with-callback-executed-on-source.json"),
 		string(genericResponse.Docs[1].Source),
 	)
 
@@ -221,7 +221,7 @@ func TestScCallIntraShardWithIssueDCT(t *testing.T) {
 	require.Nil(t, err)
 
 	require.JSONEq(t,
-		readExpectedResult("./testdata/scCallWithIssueDct/tx-after-execution-of-callback-on-destination-shard.json"),
+		readExpectedResult("./testdata/scCallWithIssueDcdt/tx-after-execution-of-callback-on-destination-shard.json"),
 		string(genericResponse.Docs[0].Source),
 	)
 
@@ -230,11 +230,11 @@ func TestScCallIntraShardWithIssueDCT(t *testing.T) {
 	require.Nil(t, err)
 
 	require.JSONEq(t,
-		readExpectedResult("./testdata/scCallWithIssueDct/tx-in-op-index-execution-of-callback-on-destination-shard.json"),
+		readExpectedResult("./testdata/scCallWithIssueDcdt/tx-in-op-index-execution-of-callback-on-destination-shard.json"),
 		string(genericResponse.Docs[0].Source),
 	)
 	require.JSONEq(t,
-		readExpectedResult("./testdata/scCallWithIssueDct/scr-with-callback-executed-on-destination-shard.json"),
+		readExpectedResult("./testdata/scCallWithIssueDcdt/scr-with-callback-executed-on-destination-shard.json"),
 		string(genericResponse.Docs[1].Source),
 	)
 }
